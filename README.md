@@ -5,7 +5,7 @@
 ### Assignment overview
 [<img align ="right" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/gather1.png" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/gather1.png)
 
-<p align=center> On many occasions, the data we recieve as analysts and researchers comes in formats that may not allow for easy data analysis. In this assignment, we shall go over deeper aspects of data wrangling by working with aggregation and data reshaping.
+<p align=justify> On many occasions, the data we recieve as analysts and researchers comes in formats that may not allow for easy data analysis. In this assignment, we shall go over deeper aspects of data wrangling by working with aggregation and data reshaping.
 to put our data in shapes that best fit and support the data analysis tasks at hand. Here, I will go over functions such as gather() and spread() from tidyr to reshape data and use join functions to combine two datasets from whcih combined inferances will be made. </p>
 
 
