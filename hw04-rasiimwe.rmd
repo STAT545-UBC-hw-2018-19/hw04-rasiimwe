@@ -3,17 +3,12 @@ title: "STAT545 Homework 4: Data wrangling with data aggregation and data reshap
 author: "Rebecca Asiimwe"
 date: '2018-10-06'
 output:
-  github_document:
-    toc: yes
   html_document:
     theme: united
     toc: yes
     keep_md: true
-    highlight: tango
-    number_sections: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
+  github_document:
+    toc: yes
   pdf_document:
     toc: yes
 ---
