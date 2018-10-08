@@ -7,8 +7,6 @@ output:
     theme: united
     toc: yes
     keep_md: true
-    df_print: paged
-    fig_caption: true
     highlight: tango
     number_sections: true
     toc_float:
@@ -184,11 +182,22 @@ left_join(presidents, parties)
 ## Joining, by = "party"
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["previous_office"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party"],"name":[3],"type":["chr"],"align":["left"]},{"label":["in_office"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["out_office"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vice"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Mike Pence"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dick Cheney"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dan Quayle"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"George H. W. Bush"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Nelson Rockefeller"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Gerald Ford"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Joe Biden"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Al Gore"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Walter Mondale"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Mike Pence"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dick Cheney"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dan Quayle"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"George H. W. Bush"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Nelson Rockefeller"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Gerald Ford"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Joe Biden"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Al Gore"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Walter Mondale"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Mike Pence"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dick Cheney"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dan Quayle"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"George H. W. Bush"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Nelson Rockefeller"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Gerald Ford"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Mike Pence"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dick Cheney"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dan Quayle"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"George H. W. Bush"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Nelson Rockefeller"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Gerald Ford"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Joe Biden"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Al Gore"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Walter Mondale"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Mike Pence"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dick Cheney"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dan Quayle"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"George H. W. Bush"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Nelson Rockefeller"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Gerald Ford"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Mike Pence"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dick Cheney"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dan Quayle"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"George H. W. Bush"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Nelson Rockefeller"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Gerald Ford"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+## # A tibble: 45 x 6
+##    name      previous_office         party  in_office out_office vice     
+##    <chr>     <chr>                   <chr>      <dbl> <chr>      <chr>    
+##  1 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Mike Pen…
+##  2 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Dick Che…
+##  3 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Dan Quay…
+##  4 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  George H…
+##  5 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Nelson R…
+##  6 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Gerald F…
+##  7 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Joe Biden
+##  8 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Al Gore  
+##  9 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Walter M…
+## 10 George W… Governor of Texas       Repub…      2001 2009       Mike Pen…
+## # ... with 35 more rows
+```
 
 
 ### Right Join
@@ -208,11 +217,22 @@ right_join(presidents, parties)
 ## Joining, by = "party"
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["previous_office"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party"],"name":[3],"type":["chr"],"align":["left"]},{"label":["in_office"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["out_office"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vice"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Mike Pence"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Mike Pence"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Mike Pence"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Mike Pence"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Mike Pence"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Mike Pence"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Joe Biden"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Joe Biden"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Joe Biden"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dick Cheney"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dick Cheney"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dick Cheney"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dick Cheney"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dick Cheney"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dick Cheney"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Al Gore"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Al Gore"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Al Gore"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dan Quayle"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dan Quayle"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dan Quayle"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dan Quayle"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dan Quayle"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dan Quayle"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"George H. W. Bush"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"George H. W. Bush"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"George H. W. Bush"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"George H. W. Bush"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"George H. W. Bush"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"George H. W. Bush"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Walter Mondale"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Walter Mondale"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Walter Mondale"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Nelson Rockefeller"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Nelson Rockefeller"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Nelson Rockefeller"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Nelson Rockefeller"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Nelson Rockefeller"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Nelson Rockefeller"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Gerald Ford"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Gerald Ford"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Gerald Ford"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Gerald Ford"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Gerald Ford"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Gerald Ford"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+## # A tibble: 45 x 6
+##    name       previous_office         party   in_office out_office vice   
+##    <chr>      <chr>                   <chr>       <dbl> <chr>      <chr>  
+##  1 Donald Tr… Chairman of The Trump … Republ…      2007 Incumbent  Mike P…
+##  2 George W.… Governor of Texas       Republ…      2001 2009       Mike P…
+##  3 George H.… Vice President of the … Republ…      1989 1993       Mike P…
+##  4 Ronald Re… Governor of California  Republ…      1981 1989       Mike P…
+##  5 Gerald Fo… Vice President of the … Republ…      1974 1977       Mike P…
+##  6 Richard N… Vice President of the … Republ…      1969 1974       Mike P…
+##  7 Barack Ob… U.S. Senator from Illi… Democr…      2009 2017       Joe Bi…
+##  8 Bill Clin… Governor of Arkansas    Democr…      1993 2001       Joe Bi…
+##  9 Jimmy Car… Governor of Georgia     Democr…      1977 1981       Joe Bi…
+## 10 Donald Tr… Chairman of The Trump … Republ…      2007 Incumbent  Dick C…
+## # ... with 35 more rows
+```
 
 
 ### Inner Join
@@ -236,11 +256,22 @@ inner_join(presidents, parties)
 ## Joining, by = "party"
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["previous_office"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party"],"name":[3],"type":["chr"],"align":["left"]},{"label":["in_office"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["out_office"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vice"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Mike Pence"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dick Cheney"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dan Quayle"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"George H. W. Bush"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Nelson Rockefeller"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Gerald Ford"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Joe Biden"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Al Gore"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Walter Mondale"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Mike Pence"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dick Cheney"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dan Quayle"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"George H. W. Bush"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Nelson Rockefeller"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Gerald Ford"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Joe Biden"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Al Gore"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Walter Mondale"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Mike Pence"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dick Cheney"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dan Quayle"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"George H. W. Bush"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Nelson Rockefeller"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Gerald Ford"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Mike Pence"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dick Cheney"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dan Quayle"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"George H. W. Bush"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Nelson Rockefeller"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Gerald Ford"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Joe Biden"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Al Gore"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Walter Mondale"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Mike Pence"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dick Cheney"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dan Quayle"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"George H. W. Bush"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Nelson Rockefeller"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Gerald Ford"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Mike Pence"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dick Cheney"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dan Quayle"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"George H. W. Bush"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Nelson Rockefeller"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Gerald Ford"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+## # A tibble: 45 x 6
+##    name      previous_office         party  in_office out_office vice     
+##    <chr>     <chr>                   <chr>      <dbl> <chr>      <chr>    
+##  1 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Mike Pen…
+##  2 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Dick Che…
+##  3 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Dan Quay…
+##  4 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  George H…
+##  5 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Nelson R…
+##  6 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Gerald F…
+##  7 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Joe Biden
+##  8 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Al Gore  
+##  9 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Walter M…
+## 10 George W… Governor of Texas       Repub…      2001 2009       Mike Pen…
+## # ... with 35 more rows
+```
 
 ### Full Join
 
@@ -263,11 +294,22 @@ full_join(presidents, parties)
 ## Joining, by = "party"
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["previous_office"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party"],"name":[3],"type":["chr"],"align":["left"]},{"label":["in_office"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["out_office"],"name":[5],"type":["chr"],"align":["left"]},{"label":["vice"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Mike Pence"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dick Cheney"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Dan Quayle"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"George H. W. Bush"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Nelson Rockefeller"},{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent","6":"Gerald Ford"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Joe Biden"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Al Gore"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017","6":"Walter Mondale"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Mike Pence"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dick Cheney"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Dan Quayle"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"George H. W. Bush"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Nelson Rockefeller"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009","6":"Gerald Ford"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Joe Biden"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Al Gore"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001","6":"Walter Mondale"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Mike Pence"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dick Cheney"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Dan Quayle"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"George H. W. Bush"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Nelson Rockefeller"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993","6":"Gerald Ford"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Mike Pence"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dick Cheney"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Dan Quayle"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"George H. W. Bush"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Nelson Rockefeller"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989","6":"Gerald Ford"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Joe Biden"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Al Gore"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981","6":"Walter Mondale"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Mike Pence"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dick Cheney"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Dan Quayle"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"George H. W. Bush"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Nelson Rockefeller"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977","6":"Gerald Ford"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Mike Pence"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dick Cheney"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Dan Quayle"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"George H. W. Bush"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Nelson Rockefeller"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974","6":"Gerald Ford"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+## # A tibble: 45 x 6
+##    name      previous_office         party  in_office out_office vice     
+##    <chr>     <chr>                   <chr>      <dbl> <chr>      <chr>    
+##  1 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Mike Pen…
+##  2 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Dick Che…
+##  3 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Dan Quay…
+##  4 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  George H…
+##  5 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Nelson R…
+##  6 Donald T… Chairman of The Trump … Repub…      2007 Incumbent  Gerald F…
+##  7 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Joe Biden
+##  8 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Al Gore  
+##  9 Barack O… U.S. Senator from Illi… Democ…      2009 2017       Walter M…
+## 10 George W… Governor of Texas       Repub…      2001 2009       Mike Pen…
+## # ... with 35 more rows
+```
 
 ## Filtering joins:
 
@@ -298,11 +340,20 @@ semi_join(presidents, parties)
 ## Joining, by = "party"
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["previous_office"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party"],"name":[3],"type":["chr"],"align":["left"]},{"label":["in_office"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["out_office"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"Donald Trump","2":"Chairman of The Trump Organization","3":"Republican","4":"2007","5":"Incumbent"},{"1":"Barack Obama","2":"U.S. Senator from Illinois","3":"Democratic","4":"2009","5":"2017"},{"1":"George W. Bush","2":"Governor of Texas","3":"Republican","4":"2001","5":"2009"},{"1":"Bill Clinton","2":"Governor of Arkansas","3":"Democratic","4":"1993","5":"2001"},{"1":"George H. W. Bush","2":"Vice President of the United States","3":"Republican","4":"1989","5":"1993"},{"1":"Ronald Reagan","2":"Governor of California","3":"Republican","4":"1981","5":"1989"},{"1":"Jimmy Carter","2":"Governor of Georgia","3":"Democratic","4":"1977","5":"1981"},{"1":"Gerald Ford","2":"Vice President of the United States","3":"Republican","4":"1974","5":"1977"},{"1":"Richard Nixon","2":"Vice President of the United States","3":"Republican","4":"1969","5":"1974"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+## # A tibble: 9 x 5
+##   name          previous_office              party    in_office out_office
+##   <chr>         <chr>                        <chr>        <dbl> <chr>     
+## 1 Donald Trump  Chairman of The Trump Organ… Republi…      2007 Incumbent 
+## 2 Barack Obama  U.S. Senator from Illinois   Democra…      2009 2017      
+## 3 George W. Bu… Governor of Texas            Republi…      2001 2009      
+## 4 Bill Clinton  Governor of Arkansas         Democra…      1993 2001      
+## 5 George H. W.… Vice President of the Unite… Republi…      1989 1993      
+## 6 Ronald Reagan Governor of California       Republi…      1981 1989      
+## 7 Jimmy Carter  Governor of Georgia          Democra…      1977 1981      
+## 8 Gerald Ford   Vice President of the Unite… Republi…      1974 1977      
+## 9 Richard Nixon Vice President of the Unite… Republi…      1969 1974
+```
 
 
 ### Anti Join
@@ -322,11 +373,11 @@ anti_join(presidents, parties)
 ## Joining, by = "party"
 ```
 
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["previous_office"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party"],"name":[3],"type":["chr"],"align":["left"]},{"label":["in_office"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["out_office"],"name":[5],"type":["chr"],"align":["left"]}],"data":[],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
+```
+## # A tibble: 0 x 5
+## # ... with 5 variables: name <chr>, previous_office <chr>, party <chr>,
+## #   in_office <dbl>, out_office <chr>
+```
 
 ## Set Operations:
 
