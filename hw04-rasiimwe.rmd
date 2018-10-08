@@ -7,6 +7,11 @@ output:
     theme: united
     toc: yes
     keep_md: true
+    highlight: tango
+    number_sections: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
   github_document:
     toc: yes
   pdf_document:
