@@ -12,8 +12,9 @@ output: github_document
 Overview: Problem - You have data in one “shape” but you wish it were in another. Usually this is because the alternative shape is superior for presenting a table, making a figure, or doing aggregation and statistical analysis. 
           Solution: Reshape your data. For simple reshaping, gather() and spread() from tidyr will suffice. 
 
-          
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="500"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
+The dplyr library as a major component of the data analysis ecosystem. 
+
+[<img align ="centre" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="500"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
           
 
 ### Activity #2
@@ -84,7 +85,7 @@ You will likely need to iterate between your data prep and your joining to make 
 
 ### Introduction to dplyr join functions
 
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/join-venn.png" width="600" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/join-venn.png)
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/join-venn.png" width="800" height="250"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/join-venn.png)
 
 Before we dig deeper into the various join functions, I will create the tibbles required to explore that application of these functions
 
