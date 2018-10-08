@@ -18,6 +18,6 @@ To my awesome guests to my repo, please visit [howework1](https://github.com/STA
 |----------------|------------|
 |[Link to homework4](http://stat545.com/Classroom/assignments/hw04/hw04.html)|This file contains homework 4 tasks and their descriptions|
 |[README.md](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/README.md)|This readme.md file provides an overview of the ghist of this repo and provides useful pointers to key files in my homework-4 repo. Herein, you will also find links to past files that provide an introduction to data exploration and analysis |
-|[hw04-rasiimwe.md](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/hw04-rasiimwe.md)|  |
+|[hw04-rasiimwe.md](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/hw04-rasiimwe.md)| This file presents concepts on tidy data- reshaping and aggregation  |
 
 
