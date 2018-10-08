@@ -1,12 +1,26 @@
 ---
-title: "hw04-rasiimwe.rmd"
-author: "Becky"
+title: "STAT545 Homework 4: Data wrangling with data aggregation and data reshaping"
+author: "Rebecca Asiimwe"
 date: '2018-10-06'
-output: github_document
-      
+output:
+  html_document:
+    theme: united
+    toc: yes
+    keep_md: true
+    df_print: paged
+    fig_caption: true
+    highlight: tango
+    number_sections: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+  github_document:
+    toc: yes
+  pdf_document:
+    toc: yes
 ---
 
-# Homework 4: Data Wrangling with data aggregation and data reshaping
+
 
 ## Data Reshaping Prompt (and relationship to aggregation) 
 Overview: Problem - You have data in one “shape” but you wish it were in another. Usually this is because the alternative shape is superior for presenting a table, making a figure, or doing aggregation and statistical analysis. 
@@ -14,7 +28,7 @@ Overview: Problem - You have data in one “shape” but you wish it were in ano
 
 The dplyr library as a major component of the data analysis ecosystem. 
 
-[<img align ="centre" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="500"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
+[<img align ="centre" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="250"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
           
 
 ### Activity #2
@@ -113,9 +127,45 @@ parties <- tibble(
 ```
 
 
-## Types of mutating joins:
+## Mutating joins:
 
-Joining tibbles using mutating functions: left_join, right_join, inner_join and full_join
+**Joining tibbles using mutating functions:**
+
+  1. `left_join`
+  2. `right_join`
+  3. `inner_join` 
+  4. `full_join`
+
+
+### Left Join
+
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif)
+
+**Basic syntax:** `left_join(x, y): keep all x, drop unmatched y`
+
+**Join Function:** 
+
+left_join(x, y): Return all rows from x, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned. This is a mutating join.
+
+#### left_join on presidents & parties
+
+```{r}
+left_join(presidents, parties)
+```
+
+
+### Right Join
+
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/right-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/right-join.gif)
+
+**Basic syntax:** `right_join(x, y): keep all y, drop unmatched x`
+
+#### right_join on presidents & parties
+
+```{r}
+right_join(presidents, parties)
+```
+
 
 ### Inner Join
 
@@ -124,61 +174,6 @@ Joining tibbles using mutating functions: left_join, right_join, inner_join and 
 **Basic syntax:** `inner_join(x, y): keep only matching`
 
 **Join Function:** 
-inner_join(x, y): Return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned. This is a mutating join.
-
-#### inner_join on presidents & parties
-
-```{r}
-inner_join(presidents, parties)
-```
-
-
-
-### Semi Join
-
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/semi-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/semi-join.gif)
-
-**Basic syntax:** `semi_join(x, y): return rows from x where there are matching values in y`
-
-**Join Function:** 
-semi_join(x, y): Return all rows from x where there are matching values in y, keeping just columns from x. A semi join differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x. This is a filtering join.
-
-
-#### semi_join on presidents & parties
-
-```{r}
-semi_join(presidents, parties)
-```
-
-
-### Left Join
-
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif)
-
-**Basic syntax:** `left_join(x, y): keep all x, drop unmatched y`
-**Join Function:** 
-left_join(x, y): Return all rows from x, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned. This is a mutating join.
-
-#### left_join on presidents & parties
-
-```{r}
-left_join(presidents, parties)
-```
-
-
-### Anti Join
-
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif)
-
-anti_join(x, y): Return all rows from x where there are not matching values in y, keeping just columns from x. This is a filtering join.
-
-#### anti_join on presidents & parties
-
-```{r}
-anti_join(presidents, parties)
-```
-
-
 
 inner_join(x, y): Return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned. This is a mutating join.
 
@@ -186,49 +181,15 @@ inner_join(x, y): Return all rows from x where there are matching values in y, a
 
 ```{r}
 inner_join(presidents, parties)
-```
-
-### Semi Join
-
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/semi-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/semi-join.gif)
-
-semi_join(x, y): Return all rows from x where there are matching values in y, keeping just columns from x. A semi join differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x. This is a filtering join.
-
-#### semi_join on presidents & parties
-
-```{r}
-semi_join(presidents, parties)
-```
-
-
-### Left Join
-
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif)
-
-left_join(x, y): Return all rows from x, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned. This is a mutating join.
-
-#### left_join on presidents & parties
-
-```{r}
-left_join(presidents, parties)
-```
-
-
-### Anti Join
-
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif)
-
-anti_join(x, y): Return all rows from x where there are not matching values in y, keeping just columns from x. This is a filtering join.
-
-#### anti_join on presidents & parties
-
-```{r}
-anti_join(presidents, parties)
 ```
 
 ### Full Join
 
 [<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/full-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/full-join.gif)
+
+**Basic syntax:** `full_join(x, y): keep everything`
+
+**Join Function:** 
 
 full_join(x, y): Return all rows and all columns from both x and y. Where there are not matching values, returns NA for the one missing. This is a mutating join.
 
@@ -238,12 +199,55 @@ full_join(x, y): Return all rows and all columns from both x and y. Where there 
 full_join(presidents, parties)
 ```
 
+## Filtering joins:
 
-Types of filtering join: semi_join, anti_join
-Types of Set Operations for two datasets: intersect, union and setdiff
-Types of binding datasets: bind_rows bind cols
-right_join(x, y): keep all y, drop unmatched x
-full_join(x, y): keep everything
+**Joining tibbles using filtering functions:** 
+
+  1. `semi_join`
+  2. `anti_join`
+
+### Semi Join
+
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/semi-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/semi-join.gif)
+
+**Basic syntax:** `semi_join(x, y): return rows from x where there are matching values in y`
+
+**Join Function:** 
+
+semi_join(x, y): Return all rows from x where there are matching values in y, keeping just columns from x. A semi join differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x. This is a filtering join.
+
+
+#### semi_join on presidents & parties
+
+```{r}
+semi_join(presidents, parties)
+```
+
+
+### Anti Join
+
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif" width="400" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif)
+
+anti_join(x, y): Return all rows from x where there are not matching values in y, keeping just columns from x. This is a filtering join.
+
+#### anti_join on presidents & parties
+
+```{r}
+anti_join(presidents, parties)
+```
+
+## Set Operations:
+
+**Functions used for set operations on two tibbles:**
+
+  1. `intersect`
+  2. `union`
+  3. `setdiff`
+
+## Biding datasets:
+
+  1. `bind_rows` 
+  2. `bind cols`
 
 
 
