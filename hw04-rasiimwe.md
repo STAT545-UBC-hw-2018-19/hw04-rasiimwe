@@ -204,22 +204,48 @@ The idea and data used is derived from the wikipedia page of [preseidents of the
 
 ``` r
 presidents <- tibble(
-  name = c("Donald Trump", "Barack Obama", "George W. Bush", "Bill Clinton","George H. W. Bush", "Ronald Reagan", "Jimmy Carter","Gerald Ford", "Richard Nixon"),
-  previous_office = c("Chairman of The Trump Organization", "U.S. Senator from Illinois", "Governor of Texas", "Governor of Arkansas","Vice President of the United States", "Governor of California", "Governor of Georgia","Vice President of the United States", "Vice President of the United States"),
-  party=c("Republican", "Democratic", "Republican", "Democratic","Republican", "Republican", "Democratic","Republican", "Republican"),
-  in_office=c(2007, 2009, 2001, 1993,1989, 1981, 1977,1974, 1969),
-  out_office=c(2021, 2017, 2009, 2001,1993, 1989, 1981,1977, 1974)
+  name = c("Donald Trump", "Barack Obama", "George W. Bush", "Bill Clinton","George H. W. Bush", "Ronald Reagan", "Jimmy Carter","Gerald Ford", "Richard Nixon", "Rebecca Asiimwe"),
+  previous_office = c("Chairman of The Trump Organization", "U.S. Senator from Illinois", "Governor of Texas", "Governor of Arkansas","Vice President of the United States", "Governor of California", "Governor of Georgia","Vice President of the United States", "Vice President of the United States", "Senior Bioinformatician BCCRC"),
+  party=c("Republican", "Democratic", "Republican", "Democratic","Republican", "Republican", "Democratic","Republican", "Republican","Independent"),
+  vice = c("Mike Pence", "Joe Biden", "Dick Cheney", "Al Gore","Dan Quayle", "George H. W. Bush", "Walter Mondale","Nelson Rockefeller", "Gerald Ford","Unknown"),
+  in_office=c(2007, 2009, 2001, 1993,1989, 1981, 1977,1974, 1969,1900),
+  out_office=c(2021, 2017, 2009, 2001,1993, 1989, 1981,1977, 1974,1969)
 )
+
+kable(presidents)
 ```
+
+| name              | previous\_office                    | party       | vice               |  in\_office|  out\_office|
+|:------------------|:------------------------------------|:------------|:-------------------|-----------:|------------:|
+| Donald Trump      | Chairman of The Trump Organization  | Republican  | Mike Pence         |        2007|         2021|
+| Barack Obama      | U.S. Senator from Illinois          | Democratic  | Joe Biden          |        2009|         2017|
+| George W. Bush    | Governor of Texas                   | Republican  | Dick Cheney        |        2001|         2009|
+| Bill Clinton      | Governor of Arkansas                | Democratic  | Al Gore            |        1993|         2001|
+| George H. W. Bush | Vice President of the United States | Republican  | Dan Quayle         |        1989|         1993|
+| Ronald Reagan     | Governor of California              | Republican  | George H. W. Bush  |        1981|         1989|
+| Jimmy Carter      | Governor of Georgia                 | Democratic  | Walter Mondale     |        1977|         1981|
+| Gerald Ford       | Vice President of the United States | Republican  | Nelson Rockefeller |        1974|         1977|
+| Richard Nixon     | Vice President of the United States | Republican  | Gerald Ford        |        1969|         1974|
+| Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Independent | Unknown            |        1900|         1969|
+
+The first tibble I have created above is that of presidents of the United states from 1969 to date. For the fun of it, I also inclued an artifuctual president to help point out salient dimensions when working with table joins.
 
 ### Creating tibble 2
 
 ``` r
 parties <- tibble(
-  party=c("Republican", "Democratic", "Republican", "Democratic","Republican", "Republican", "Democratic","Republican", "Republican"),
-  vice = c("Mike Pence", "Joe Biden", "Dick Cheney", "Al Gore","Dan Quayle", "George H. W. Bush", "Walter Mondale","Nelson Rockefeller", "Gerald Ford")
+  party=c("Republican", "Democratic"),
+  lead=c("Ronna McDaniel", "Tom Perez")
 )
+
+kable(parties) 
 ```
+
+| party         | lead                                                                                               |
+|:--------------|:---------------------------------------------------------------------------------------------------|
+| Republican    | Ronna McDaniel                                                                                     |
+| Democratic    | Tom Perez                                                                                          |
+| The second ti | bble above shows the unique political parites in the United States and the respective party leads. |
 
 Mutating joins:
 ---------------
@@ -244,25 +270,48 @@ left\_join(x, y): keep all x, drop unmatched y:- Return all rows from ‘x’, a
 #### left\_join on presidents & parties
 
 ``` r
-left_join(presidents, parties)
+left_join(presidents, parties) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 45 x 6
-    ##    name      previous_office         party  in_office out_office vice     
-    ##    <chr>     <chr>                   <chr>      <dbl>      <dbl> <chr>    
-    ##  1 Donald T… Chairman of The Trump … Repub…      2007       2021 Mike Pen…
-    ##  2 Donald T… Chairman of The Trump … Repub…      2007       2021 Dick Che…
-    ##  3 Donald T… Chairman of The Trump … Repub…      2007       2021 Dan Quay…
-    ##  4 Donald T… Chairman of The Trump … Repub…      2007       2021 George H…
-    ##  5 Donald T… Chairman of The Trump … Repub…      2007       2021 Nelson R…
-    ##  6 Donald T… Chairman of The Trump … Repub…      2007       2021 Gerald F…
-    ##  7 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Joe Biden
-    ##  8 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Al Gore  
-    ##  9 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Walter M…
-    ## 10 George W… Governor of Texas       Repub…      2001       2009 Mike Pen…
-    ## # ... with 35 more rows
+| name                | previous\_office                        | party           | vice                 |    in\_office|    out\_office| lead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|:--------------------|:----------------------------------------|:----------------|:---------------------|-------------:|--------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Donald Trump        | Chairman of The Trump Organization      | Republican      | Mike Pence           |          2007|           2021| Ronna McDaniel                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Barack Obama        | U.S. Senator from Illinois              | Democratic      | Joe Biden            |          2009|           2017| Tom Perez                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| George W. Bush      | Governor of Texas                       | Republican      | Dick Cheney          |          2001|           2009| Ronna McDaniel                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Bill Clinton        | Governor of Arkansas                    | Democratic      | Al Gore              |          1993|           2001| Tom Perez                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| George H. W. Bush   | Vice President of the United States     | Republican      | Dan Quayle           |          1989|           1993| Ronna McDaniel                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Ronald Reagan       | Governor of California                  | Republican      | George H. W. Bush    |          1981|           1989| Ronna McDaniel                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Jimmy Carter        | Governor of Georgia                     | Democratic      | Walter Mondale       |          1977|           1981| Tom Perez                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Gerald Ford         | Vice President of the United States     | Republican      | Nelson Rockefeller   |          1974|           1977| Ronna McDaniel                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Richard Nixon       | Vice President of the United States     | Republican      | Gerald Ford          |          1969|           1974| Ronna McDaniel                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Rebecca Asiimwe     | Senior Bioinformatician BCCRC           | Independent     | Unknown              |          1900|           1969| NA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| In the table above, | we see the effect of a left\_join on bo | th the \`presid | ents`and`parties\` t |  ibbles - lef|  t and right t| ibbles respectively. We see that we have maintained the `presidents` tibble concartenated with an additional variable `lead` from the `parties` tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique in this case and since president Rebecca Asiimwe's party does not appear in the `parties` tibble, the lead is replaced with NA in the output table above. Let's try a left\_join on parties and presidents. |
+
+#### left\_join on parties & presidents
+
+``` r
+left_join(parties, presidents) %>% 
+  kable()
+```
+
+    ## Joining, by = "party"
+
+| party      | lead           | name              | previous\_office                    | vice               |  in\_office|  out\_office|
+|:-----------|:---------------|:------------------|:------------------------------------|:-------------------|-----------:|------------:|
+| Republican | Ronna McDaniel | Donald Trump      | Chairman of The Trump Organization  | Mike Pence         |        2007|         2021|
+| Republican | Ronna McDaniel | George W. Bush    | Governor of Texas                   | Dick Cheney        |        2001|         2009|
+| Republican | Ronna McDaniel | George H. W. Bush | Vice President of the United States | Dan Quayle         |        1989|         1993|
+| Republican | Ronna McDaniel | Ronald Reagan     | Governor of California              | George H. W. Bush  |        1981|         1989|
+| Republican | Ronna McDaniel | Gerald Ford       | Vice President of the United States | Nelson Rockefeller |        1974|         1977|
+| Republican | Ronna McDaniel | Richard Nixon     | Vice President of the United States | Gerald Ford        |        1969|         1974|
+| Democratic | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
+| Democratic | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
+| Democratic | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
+
+What happened here!! .... looks different and more interesting. When we look closely we see that Rebecca Asiimwe has been droped in this join mainly because, her party does not appear in the parties table. In a nutshell what is going on here is that the left join on (parties, presidents) maintains all variables from the parties tibble plus matching tables from the presidents table.
 
 ### Right Join
 
@@ -275,25 +324,25 @@ left_join(presidents, parties)
 #### right\_join on presidents & parties
 
 ``` r
-right_join(presidents, parties)
+right_join(presidents, parties) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 45 x 6
-    ##    name       previous_office         party   in_office out_office vice   
-    ##    <chr>      <chr>                   <chr>       <dbl>      <dbl> <chr>  
-    ##  1 Donald Tr… Chairman of The Trump … Republ…      2007       2021 Mike P…
-    ##  2 George W.… Governor of Texas       Republ…      2001       2009 Mike P…
-    ##  3 George H.… Vice President of the … Republ…      1989       1993 Mike P…
-    ##  4 Ronald Re… Governor of California  Republ…      1981       1989 Mike P…
-    ##  5 Gerald Fo… Vice President of the … Republ…      1974       1977 Mike P…
-    ##  6 Richard N… Vice President of the … Republ…      1969       1974 Mike P…
-    ##  7 Barack Ob… U.S. Senator from Illi… Democr…      2009       2017 Joe Bi…
-    ##  8 Bill Clin… Governor of Arkansas    Democr…      1993       2001 Joe Bi…
-    ##  9 Jimmy Car… Governor of Georgia     Democr…      1977       1981 Joe Bi…
-    ## 10 Donald Tr… Chairman of The Trump … Republ…      2007       2021 Dick C…
-    ## # ... with 35 more rows
+| name              | previous\_office                    | party      | vice               |  in\_office|  out\_office| lead           |
+|:------------------|:------------------------------------|:-----------|:-------------------|-----------:|------------:|:---------------|
+| Donald Trump      | Chairman of The Trump Organization  | Republican | Mike Pence         |        2007|         2021| Ronna McDaniel |
+| George W. Bush    | Governor of Texas                   | Republican | Dick Cheney        |        2001|         2009| Ronna McDaniel |
+| George H. W. Bush | Vice President of the United States | Republican | Dan Quayle         |        1989|         1993| Ronna McDaniel |
+| Ronald Reagan     | Governor of California              | Republican | George H. W. Bush  |        1981|         1989| Ronna McDaniel |
+| Gerald Ford       | Vice President of the United States | Republican | Nelson Rockefeller |        1974|         1977| Ronna McDaniel |
+| Richard Nixon     | Vice President of the United States | Republican | Gerald Ford        |        1969|         1974| Ronna McDaniel |
+| Barack Obama      | U.S. Senator from Illinois          | Democratic | Joe Biden          |        2009|         2017| Tom Perez      |
+| Bill Clinton      | Governor of Arkansas                | Democratic | Al Gore            |        1993|         2001| Tom Perez      |
+| Jimmy Carter      | Governor of Georgia                 | Democratic | Walter Mondale     |        1977|         1981| Tom Perez      |
+
+What the right join is doing here is that it has included all the rows of of the parties tibble and only those from the presidents tibble that match. As we can see, president Rebecca Asiimwe was droped by the right join since their party does not match any of those in the parties tibble.
 
 ### Inner Join
 
@@ -308,25 +357,44 @@ inner\_join(x, y): : keep only matching:- Return all rows from x where there are
 #### inner\_join on presidents & parties
 
 ``` r
-inner_join(presidents, parties)
+inner_join(presidents, parties) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 45 x 6
-    ##    name      previous_office         party  in_office out_office vice     
-    ##    <chr>     <chr>                   <chr>      <dbl>      <dbl> <chr>    
-    ##  1 Donald T… Chairman of The Trump … Repub…      2007       2021 Mike Pen…
-    ##  2 Donald T… Chairman of The Trump … Repub…      2007       2021 Dick Che…
-    ##  3 Donald T… Chairman of The Trump … Repub…      2007       2021 Dan Quay…
-    ##  4 Donald T… Chairman of The Trump … Repub…      2007       2021 George H…
-    ##  5 Donald T… Chairman of The Trump … Repub…      2007       2021 Nelson R…
-    ##  6 Donald T… Chairman of The Trump … Repub…      2007       2021 Gerald F…
-    ##  7 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Joe Biden
-    ##  8 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Al Gore  
-    ##  9 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Walter M…
-    ## 10 George W… Governor of Texas       Repub…      2001       2009 Mike Pen…
-    ## # ... with 35 more rows
+| name              | previous\_office                    | party      | vice               |  in\_office|  out\_office| lead           |
+|:------------------|:------------------------------------|:-----------|:-------------------|-----------:|------------:|:---------------|
+| Donald Trump      | Chairman of The Trump Organization  | Republican | Mike Pence         |        2007|         2021| Ronna McDaniel |
+| Barack Obama      | U.S. Senator from Illinois          | Democratic | Joe Biden          |        2009|         2017| Tom Perez      |
+| George W. Bush    | Governor of Texas                   | Republican | Dick Cheney        |        2001|         2009| Ronna McDaniel |
+| Bill Clinton      | Governor of Arkansas                | Democratic | Al Gore            |        1993|         2001| Tom Perez      |
+| George H. W. Bush | Vice President of the United States | Republican | Dan Quayle         |        1989|         1993| Ronna McDaniel |
+| Ronald Reagan     | Governor of California              | Republican | George H. W. Bush  |        1981|         1989| Ronna McDaniel |
+| Jimmy Carter      | Governor of Georgia                 | Democratic | Walter Mondale     |        1977|         1981| Tom Perez      |
+| Gerald Ford       | Vice President of the United States | Republican | Nelson Rockefeller |        1974|         1977| Ronna McDaniel |
+| Richard Nixon     | Vice President of the United States | Republican | Gerald Ford        |        1969|         1974| Ronna McDaniel |
+
+``` r
+inner_join(parties, presidents) %>% 
+  kable()
+```
+
+    ## Joining, by = "party"
+
+| party      | lead           | name              | previous\_office                    | vice               |  in\_office|  out\_office|
+|:-----------|:---------------|:------------------|:------------------------------------|:-------------------|-----------:|------------:|
+| Republican | Ronna McDaniel | Donald Trump      | Chairman of The Trump Organization  | Mike Pence         |        2007|         2021|
+| Republican | Ronna McDaniel | George W. Bush    | Governor of Texas                   | Dick Cheney        |        2001|         2009|
+| Republican | Ronna McDaniel | George H. W. Bush | Vice President of the United States | Dan Quayle         |        1989|         1993|
+| Republican | Ronna McDaniel | Ronald Reagan     | Governor of California              | George H. W. Bush  |        1981|         1989|
+| Republican | Ronna McDaniel | Gerald Ford       | Vice President of the United States | Nelson Rockefeller |        1974|         1977|
+| Republican | Ronna McDaniel | Richard Nixon     | Vice President of the United States | Gerald Ford        |        1969|         1974|
+| Democratic | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
+| Democratic | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
+| Democratic | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
+
+We look closely we see that we get a similar result to that of a left join on parties, presidents
 
 ### Full Join
 
@@ -346,20 +414,19 @@ full_join(presidents, parties)
 
     ## Joining, by = "party"
 
-    ## # A tibble: 45 x 6
-    ##    name      previous_office         party  in_office out_office vice     
-    ##    <chr>     <chr>                   <chr>      <dbl>      <dbl> <chr>    
-    ##  1 Donald T… Chairman of The Trump … Repub…      2007       2021 Mike Pen…
-    ##  2 Donald T… Chairman of The Trump … Repub…      2007       2021 Dick Che…
-    ##  3 Donald T… Chairman of The Trump … Repub…      2007       2021 Dan Quay…
-    ##  4 Donald T… Chairman of The Trump … Repub…      2007       2021 George H…
-    ##  5 Donald T… Chairman of The Trump … Repub…      2007       2021 Nelson R…
-    ##  6 Donald T… Chairman of The Trump … Repub…      2007       2021 Gerald F…
-    ##  7 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Joe Biden
-    ##  8 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Al Gore  
-    ##  9 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Walter M…
-    ## 10 George W… Governor of Texas       Repub…      2001       2009 Mike Pen…
-    ## # ... with 35 more rows
+    ## # A tibble: 10 x 7
+    ##    name     previous_office     party  vice    in_office out_office lead  
+    ##    <chr>    <chr>               <chr>  <chr>       <dbl>      <dbl> <chr> 
+    ##  1 Donald … Chairman of The Tr… Repub… Mike P…      2007       2021 Ronna…
+    ##  2 Barack … U.S. Senator from … Democ… Joe Bi…      2009       2017 Tom P…
+    ##  3 George … Governor of Texas   Repub… Dick C…      2001       2009 Ronna…
+    ##  4 Bill Cl… Governor of Arkans… Democ… Al Gore      1993       2001 Tom P…
+    ##  5 George … Vice President of … Repub… Dan Qu…      1989       1993 Ronna…
+    ##  6 Ronald … Governor of Califo… Repub… George…      1981       1989 Ronna…
+    ##  7 Jimmy C… Governor of Georgia Democ… Walter…      1977       1981 Tom P…
+    ##  8 Gerald … Vice President of … Repub… Nelson…      1974       1977 Ronna…
+    ##  9 Richard… Vice President of … Repub… Gerald…      1969       1974 Ronna…
+    ## 10 Rebecca… Senior Bioinformat… Indep… Unknown      1900       1969 <NA>
 
 Filtering joins:
 ----------------
@@ -387,18 +454,18 @@ semi_join(presidents, parties)
 
     ## Joining, by = "party"
 
-    ## # A tibble: 9 x 5
-    ##   name          previous_office              party    in_office out_office
-    ##   <chr>         <chr>                        <chr>        <dbl>      <dbl>
-    ## 1 Donald Trump  Chairman of The Trump Organ… Republi…      2007       2021
-    ## 2 Barack Obama  U.S. Senator from Illinois   Democra…      2009       2017
-    ## 3 George W. Bu… Governor of Texas            Republi…      2001       2009
-    ## 4 Bill Clinton  Governor of Arkansas         Democra…      1993       2001
-    ## 5 George H. W.… Vice President of the Unite… Republi…      1989       1993
-    ## 6 Ronald Reagan Governor of California       Republi…      1981       1989
-    ## 7 Jimmy Carter  Governor of Georgia          Democra…      1977       1981
-    ## 8 Gerald Ford   Vice President of the Unite… Republi…      1974       1977
-    ## 9 Richard Nixon Vice President of the Unite… Republi…      1969       1974
+    ## # A tibble: 9 x 6
+    ##   name       previous_office         party  vice      in_office out_office
+    ##   <chr>      <chr>                   <chr>  <chr>         <dbl>      <dbl>
+    ## 1 Donald Tr… Chairman of The Trump … Repub… Mike Pen…      2007       2021
+    ## 2 Barack Ob… U.S. Senator from Illi… Democ… Joe Biden      2009       2017
+    ## 3 George W.… Governor of Texas       Repub… Dick Che…      2001       2009
+    ## 4 Bill Clin… Governor of Arkansas    Democ… Al Gore        1993       2001
+    ## 5 George H.… Vice President of the … Repub… Dan Quay…      1989       1993
+    ## 6 Ronald Re… Governor of California  Repub… George H…      1981       1989
+    ## 7 Jimmy Car… Governor of Georgia     Democ… Walter M…      1977       1981
+    ## 8 Gerald Fo… Vice President of the … Repub… Nelson R…      1974       1977
+    ## 9 Richard N… Vice President of the … Repub… Gerald F…      1969       1974
 
 ### Anti Join
 
@@ -414,9 +481,10 @@ anti_join(presidents, parties)
 
     ## Joining, by = "party"
 
-    ## # A tibble: 0 x 5
-    ## # ... with 5 variables: name <chr>, previous_office <chr>, party <chr>,
-    ## #   in_office <dbl>, out_office <dbl>
+    ## # A tibble: 1 x 6
+    ##   name        previous_office         party    vice   in_office out_office
+    ##   <chr>       <chr>                   <chr>    <chr>      <dbl>      <dbl>
+    ## 1 Rebecca As… Senior Bioinformaticia… Indepen… Unkno…      1900       1969
 
 ### Joining tibbles with respect to some common column name
 
@@ -426,20 +494,19 @@ left_join(presidents, parties)
 
     ## Joining, by = "party"
 
-    ## # A tibble: 45 x 6
-    ##    name      previous_office         party  in_office out_office vice     
-    ##    <chr>     <chr>                   <chr>      <dbl>      <dbl> <chr>    
-    ##  1 Donald T… Chairman of The Trump … Repub…      2007       2021 Mike Pen…
-    ##  2 Donald T… Chairman of The Trump … Repub…      2007       2021 Dick Che…
-    ##  3 Donald T… Chairman of The Trump … Repub…      2007       2021 Dan Quay…
-    ##  4 Donald T… Chairman of The Trump … Repub…      2007       2021 George H…
-    ##  5 Donald T… Chairman of The Trump … Repub…      2007       2021 Nelson R…
-    ##  6 Donald T… Chairman of The Trump … Repub…      2007       2021 Gerald F…
-    ##  7 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Joe Biden
-    ##  8 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Al Gore  
-    ##  9 Barack O… U.S. Senator from Illi… Democ…      2009       2017 Walter M…
-    ## 10 George W… Governor of Texas       Repub…      2001       2009 Mike Pen…
-    ## # ... with 35 more rows
+    ## # A tibble: 10 x 7
+    ##    name     previous_office     party  vice    in_office out_office lead  
+    ##    <chr>    <chr>               <chr>  <chr>       <dbl>      <dbl> <chr> 
+    ##  1 Donald … Chairman of The Tr… Repub… Mike P…      2007       2021 Ronna…
+    ##  2 Barack … U.S. Senator from … Democ… Joe Bi…      2009       2017 Tom P…
+    ##  3 George … Governor of Texas   Repub… Dick C…      2001       2009 Ronna…
+    ##  4 Bill Cl… Governor of Arkans… Democ… Al Gore      1993       2001 Tom P…
+    ##  5 George … Vice President of … Repub… Dan Qu…      1989       1993 Ronna…
+    ##  6 Ronald … Governor of Califo… Repub… George…      1981       1989 Ronna…
+    ##  7 Jimmy C… Governor of Georgia Democ… Walter…      1977       1981 Tom P…
+    ##  8 Gerald … Vice President of … Repub… Nelson…      1974       1977 Ronna…
+    ##  9 Richard… Vice President of … Repub… Gerald…      1969       1974 Ronna…
+    ## 10 Rebecca… Senior Bioinformat… Indep… Unknown      1900       1969 <NA>
 
 It makes sense to want to join the data frames with respect to some common column name. In this case it is clear that the id column is in both data frames. So let’s join the data frames using “id” as a “key”. The question is what to do about the fact that there is no id in df2 corresponding to id number 2. This is why different types of joins exist. Let’s see how they work. We’ll start with the left join: So the left join looks at the first data frame df1 and then attempts to find corresponding “id” values in df2 that match all id values in df1. Of course there are no ids matching 2 or 3 in df2 so what happens ? The left join will insert NAs in the m1.y column since there are no values in df2. Note that there is in fact an id of value 3 in both data frames so it fills in both measurement columns with the values. Also note that since in both data frames there is a column named “m1” so it has to create unique names to accommodate both columns. The “x” and “y” come from the fact that df1 comes before df2 in the calling sequence to left\_join. Thus “x” matches df1 and “y” matches df2.
 
