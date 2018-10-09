@@ -407,6 +407,15 @@ By default the data frames are merged on the columns with names they both have, 
 match(STAT_profs, Bioinformatics_profs) %>% 
   kable
 #match(presidents, parties)
+
+  name=c("Sara Mostafavi", "Sohrab Shah", "Charmaine Dean", "Steve Jones", "Jinko Graham", "Brad McNeney","Fiona Brinkman")
+
+  name2=c("Vincenzo Coia","Jennifer Bryan", "Sara Mostafavi", "Charmaine Dean","Jinko Graham","Brad McNeney", "Suborna Ahmed")
+match(name, name2)
+
+match("Sara Mostafavi", name2, nomatch = NA_integer_, incomparables = NULL)
+
+"Sara Mostafavi" %in% name2
 ```
 
 The match function returns a vector of the positions of (first) matches of its first argument in its second. 
