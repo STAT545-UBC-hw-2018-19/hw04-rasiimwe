@@ -237,6 +237,7 @@ party        lead
 -----------  ---------------
 Republican   Ronna McDaniel 
 Democratic   Tom Perez      
+
 The second tibble above shows the unique political parites in the United States and the respective party leads.
 
 ## Mutating joins:
@@ -285,6 +286,7 @@ Jimmy Carter        Governor of Georgia                   Democratic    Walter M
 Gerald Ford         Vice President of the United States   Republican    Nelson Rockefeller         1974         1977  Ronna McDaniel 
 Richard Nixon       Vice President of the United States   Republican    Gerald Ford                1969         1974  Ronna McDaniel 
 Rebecca Asiimwe     Senior Bioinformatician BCCRC         Independent   Unknown                    1900         1969  NA             
+
 In the table above, we see the effect of a left_join on both the `presidents` and `parties` tibbles - left and right tibbles respectively. We see that we have maintained the `presidents` tibble concartenated with an additional variable `lead` from the `parties` tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique in this case and since president Rebecca Asiimwe's party does not appear in the `parties` tibble, the lead is replaced with NA in the output table above. Let's try a left_join on parties and presidents.
 
 #### left_join on parties & presidents

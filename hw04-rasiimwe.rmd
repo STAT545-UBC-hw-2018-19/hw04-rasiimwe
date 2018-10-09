@@ -131,6 +131,7 @@ parties <- tibble(
 
 kable(parties) 
 ```
+
 The second tibble above shows the unique political parites in the United States and the respective party leads.
 
 ## Mutating joins:
@@ -159,6 +160,7 @@ left_join(x, y): keep all x, drop unmatched y:-  Return all rows from ‘x’, a
 left_join(presidents, parties) %>% 
   kable()
 ```
+
 In the table above, we see the effect of a left_join on both the `presidents` and `parties` tibbles - left and right tibbles respectively. We see that we have maintained the `presidents` tibble concartenated with an additional variable `lead` from the `parties` tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique in this case and since president Rebecca Asiimwe's party does not appear in the `parties` tibble, the lead is replaced with NA in the output table above. Let's try a left_join on parties and presidents.
 
 #### left_join on parties & presidents
