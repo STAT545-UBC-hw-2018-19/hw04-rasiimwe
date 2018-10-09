@@ -24,9 +24,12 @@ Rebecca Asiimwe
     -   [Filtering joins:](#filtering-joins)
         -   [Semi Join](#semi-join)
         -   [Anti Join](#anti-join)
-        -   [Joining tibbles with respect to some common column name](#joining-tibbles-with-respect-to-some-common-column-name)
     -   [Set Operations:](#set-operations)
+        -   [Intersect](#intersect)
+        -   [setdiff(Bioinformatics\_profs, STAT\_profs)](#setdiffbioinformatics_profs-stat_profs)
+        -   [Union](#union)
     -   [Biding datasets:](#biding-datasets)
+    -   [Activity \#3](#activity-3)
         -   [Sources to acknowledge:](#sources-to-acknowledge)
 
 STAT545 Homework 4: Data wrangling with data aggregation and data reshaping
@@ -234,8 +237,8 @@ The first tibble I have created above is that of presidents of the United states
 
 ``` r
 parties <- tibble(
-  party=c("Republican", "Democratic"),
-  lead=c("Ronna McDaniel", "Tom Perez")
+  party=c("Republican", "Democratic", "Other"),
+  lead=c("Ronna McDaniel", "Tom Perez", "Nameless")
 )
 
 kable(parties) 
@@ -245,6 +248,7 @@ kable(parties)
 |:-----------|:---------------|
 | Republican | Ronna McDaniel |
 | Democratic | Tom Perez      |
+| Other      | Nameless       |
 
 The second tibble above shows the unique political parites in the United States and the respective party leads.
 
@@ -257,6 +261,8 @@ Mutating joins:
 2.  `right_join`
 3.  `inner_join`
 4.  `full_join`
+
+\*\* By default all joins will be by party `left_join(presidents, parties, by="party")`\*\*
 
 ### Left Join
 
@@ -290,9 +296,9 @@ left_join(presidents, parties) %>%
 | Richard Nixon     | Vice President of the United States | Republican  | Gerald Ford        |        1969|         1974| Ronna McDaniel |
 | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Independent | Unknown            |        1900|         1969| NA             |
 
-In the table above, we see the effect of a left\_join on both the `presidents` and `parties` tibbles - left and right tibbles respectively. We see that we have maintained the `presidents` tibble concartenated with an additional variable `lead` from the `parties` tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique in this case and since president Rebecca Asiimwe's party does not appear in the `parties` tibble, the lead is replaced with NA in the output table above. Let's try a left\_join on parties and presidents.
+In the table above table, we see the effect of a left\_join on the `presidents` and `parties` tibbles - (presidents, parties). We see that in the output we have maintained the `presidents` tibble concartenated with an additional variable `lead` from the `parties` tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique and since president Rebecca Asiimwe's party does not appear in the `parties` tibble, the lead is replaced with NA in the output table above. Let's try a left\_join on parties and presidents.
 
-#### left\_join on parties & presidents
+##### left\_join on parties & presidents
 
 ``` r
 left_join(parties, presidents) %>% 
@@ -312,8 +318,9 @@ left_join(parties, presidents) %>%
 | Democratic | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
 | Democratic | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
 | Democratic | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
+| Other      | Nameless       | NA                | NA                                  | NA                 |          NA|           NA|
 
-What happened here!! .... looks different and more interesting. When we look closely we see that Rebecca Asiimwe has been droped in this join mainly because, her party does not appear in the parties table. In a nutshell what is going on here is that the left join on (parties, presidents) maintains all variables from the parties tibble plus matching tables from the presidents table.
+What happened here!! .... the output table looks different and yet more interesting. When we look closely we see that Rebecca Asiimwe has been droped in this join operation in which we are doing a left join of presidents on parties and joining by the party variable from the parties table. The drop of this president is mainly because, her party does not appear in the parties table. In a nutshell what is going on here is that the left join on (parties, presidents) has maintained all variables from the parties tibble plus matching rows from the presidents table.
 
 ### Right Join
 
@@ -343,8 +350,33 @@ right_join(presidents, parties) %>%
 | Barack Obama      | U.S. Senator from Illinois          | Democratic | Joe Biden          |        2009|         2017| Tom Perez      |
 | Bill Clinton      | Governor of Arkansas                | Democratic | Al Gore            |        1993|         2001| Tom Perez      |
 | Jimmy Carter      | Governor of Georgia                 | Democratic | Walter Mondale     |        1977|         1981| Tom Perez      |
+| NA                | NA                                  | Other      | NA                 |          NA|           NA| Nameless       |
 
-What the right join is doing here is that it has included all the rows of of the parties tibble and only those from the presidents tibble that match. As we can see, president Rebecca Asiimwe was droped by the right join since their party does not match any of those in the parties tibble.
+The right join on (presidents, parties) maintains all tupples/rows from the presidents tibble for which there are matching rows in the parties table. As we can see, this includes all the rows from the parties and only those from the presidents tibble that match. President Rebecca Asiimwe was droped by the right join since their party does not match any of those in the parties tibble.
+
+##### right join on parties & presidents
+
+``` r
+right_join(parties, presidents) %>% 
+  kable()
+```
+
+    ## Joining, by = "party"
+
+| party       | lead           | name              | previous\_office                    | vice               |  in\_office|  out\_office|
+|:------------|:---------------|:------------------|:------------------------------------|:-------------------|-----------:|------------:|
+| Republican  | Ronna McDaniel | Donald Trump      | Chairman of The Trump Organization  | Mike Pence         |        2007|         2021|
+| Democratic  | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
+| Republican  | Ronna McDaniel | George W. Bush    | Governor of Texas                   | Dick Cheney        |        2001|         2009|
+| Democratic  | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
+| Republican  | Ronna McDaniel | George H. W. Bush | Vice President of the United States | Dan Quayle         |        1989|         1993|
+| Republican  | Ronna McDaniel | Ronald Reagan     | Governor of California              | George H. W. Bush  |        1981|         1989|
+| Democratic  | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
+| Republican  | Ronna McDaniel | Gerald Ford       | Vice President of the United States | Nelson Rockefeller |        1974|         1977|
+| Republican  | Ronna McDaniel | Richard Nixon     | Vice President of the United States | Gerald Ford        |        1969|         1974|
+| Independent | NA             | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Unknown            |        1900|         1969|
+
+Here we see that the right\_join on (parties, presidents) maintains all rows from the parties tibble and concartenates them with all rows from the presidents tibble. Unlike the left joins on (parties, presidents) that droped non matching rows as seen above, here non matching rows are included as well with NAs used for cases of missing values.
 
 ### Inner Join
 
@@ -377,6 +409,10 @@ inner_join(presidents, parties) %>%
 | Gerald Ford       | Vice President of the United States | Republican | Nelson Rockefeller |        1974|         1977| Ronna McDaniel |
 | Richard Nixon     | Vice President of the United States | Republican | Gerald Ford        |        1969|         1974| Ronna McDaniel |
 
+The output of the inner join as see above results in the inclusion of all the rows of the parties tibble to match rows in presidents tibble - matching is done by party. As we can see, president Rebecca Asiimwe was droped by the inner join because the party to which she belongs (Independent) does not match any of those in the parties tibble/ does not exist in the parties table.
+
+##### inner\_join on parties & presidents
+
 ``` r
 inner_join(parties, presidents) %>% 
   kable()
@@ -396,7 +432,7 @@ inner_join(parties, presidents) %>%
 | Democratic | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
 | Democratic | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
 
-We look closely we see that we get a similar result to that of a left join on parties, presidents
+An inner join on parties and presidents on variable party results in every party in the parties table being matched with every president in the presidents tibble. We can also see that every party appears multiple times in the above output table and appearing once for each matching row. We can still see that president Rebecca Asiimwe was dropped from the result of the join because her party does not appear in the parties table and therefore wouldn't match any row in the presidents table.
 
 ### Full Join
 
@@ -411,24 +447,50 @@ full\_join(x, y): Return all rows and all columns from both x and y. Where there
 #### full\_join on presidents & parties
 
 ``` r
-full_join(presidents, parties)
+full_join(presidents, parties) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 10 x 7
-    ##    name     previous_office     party  vice    in_office out_office lead  
-    ##    <chr>    <chr>               <chr>  <chr>       <dbl>      <dbl> <chr> 
-    ##  1 Donald … Chairman of The Tr… Repub… Mike P…      2007       2021 Ronna…
-    ##  2 Barack … U.S. Senator from … Democ… Joe Bi…      2009       2017 Tom P…
-    ##  3 George … Governor of Texas   Repub… Dick C…      2001       2009 Ronna…
-    ##  4 Bill Cl… Governor of Arkans… Democ… Al Gore      1993       2001 Tom P…
-    ##  5 George … Vice President of … Repub… Dan Qu…      1989       1993 Ronna…
-    ##  6 Ronald … Governor of Califo… Repub… George…      1981       1989 Ronna…
-    ##  7 Jimmy C… Governor of Georgia Democ… Walter…      1977       1981 Tom P…
-    ##  8 Gerald … Vice President of … Repub… Nelson…      1974       1977 Ronna…
-    ##  9 Richard… Vice President of … Repub… Gerald…      1969       1974 Ronna…
-    ## 10 Rebecca… Senior Bioinformat… Indep… Unknown      1900       1969 <NA>
+| name              | previous\_office                    | party       | vice               |  in\_office|  out\_office| lead           |
+|:------------------|:------------------------------------|:------------|:-------------------|-----------:|------------:|:---------------|
+| Donald Trump      | Chairman of The Trump Organization  | Republican  | Mike Pence         |        2007|         2021| Ronna McDaniel |
+| Barack Obama      | U.S. Senator from Illinois          | Democratic  | Joe Biden          |        2009|         2017| Tom Perez      |
+| George W. Bush    | Governor of Texas                   | Republican  | Dick Cheney        |        2001|         2009| Ronna McDaniel |
+| Bill Clinton      | Governor of Arkansas                | Democratic  | Al Gore            |        1993|         2001| Tom Perez      |
+| George H. W. Bush | Vice President of the United States | Republican  | Dan Quayle         |        1989|         1993| Ronna McDaniel |
+| Ronald Reagan     | Governor of California              | Republican  | George H. W. Bush  |        1981|         1989| Ronna McDaniel |
+| Jimmy Carter      | Governor of Georgia                 | Democratic  | Walter Mondale     |        1977|         1981| Tom Perez      |
+| Gerald Ford       | Vice President of the United States | Republican  | Nelson Rockefeller |        1974|         1977| Ronna McDaniel |
+| Richard Nixon     | Vice President of the United States | Republican  | Gerald Ford        |        1969|         1974| Ronna McDaniel |
+| Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Independent | Unknown            |        1900|         1969| NA             |
+| NA                | NA                                  | Other       | NA                 |          NA|           NA| Nameless       |
+
+The full join functions just like taking the union of two sets. From the output table of this join we get all variables of presidents plus all variables from the lead table, however, we should note that the unique variable on which the join is being made (where the two table intersect=party) is not duplicated. With a full join, all rows without matching values from either table carry NAs in the variables found only in the other table.
+
+``` r
+full_join(parties, presidents) %>% 
+  kable()
+```
+
+    ## Joining, by = "party"
+
+| party       | lead           | name              | previous\_office                    | vice               |  in\_office|  out\_office|
+|:------------|:---------------|:------------------|:------------------------------------|:-------------------|-----------:|------------:|
+| Republican  | Ronna McDaniel | Donald Trump      | Chairman of The Trump Organization  | Mike Pence         |        2007|         2021|
+| Republican  | Ronna McDaniel | George W. Bush    | Governor of Texas                   | Dick Cheney        |        2001|         2009|
+| Republican  | Ronna McDaniel | George H. W. Bush | Vice President of the United States | Dan Quayle         |        1989|         1993|
+| Republican  | Ronna McDaniel | Ronald Reagan     | Governor of California              | George H. W. Bush  |        1981|         1989|
+| Republican  | Ronna McDaniel | Gerald Ford       | Vice President of the United States | Nelson Rockefeller |        1974|         1977|
+| Republican  | Ronna McDaniel | Richard Nixon     | Vice President of the United States | Gerald Ford        |        1969|         1974|
+| Democratic  | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
+| Democratic  | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
+| Democratic  | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
+| Other       | Nameless       | NA                | NA                                  | NA                 |          NA|           NA|
+| Independent | NA             | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Unknown            |        1900|         1969|
+
+In the above table we have a similar output to that of a full join on presidents and parties except for the fact that joining is done on the parties table, (inner vs outer / left vs right table in join). And we can also see that variables from the presidents table get appended to the party table, however, we see the contrary in the full join on presidents and parties since we are joining the parties tibble to the presidents tibble by party.
 
 Filtering joins:
 ----------------
@@ -451,23 +513,41 @@ semi\_join(x, y):return rows from x where there are matching values in y:- Retur
 #### semi\_join on presidents & parties
 
 ``` r
-semi_join(presidents, parties)
+semi_join(presidents, parties) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 9 x 6
-    ##   name       previous_office         party  vice      in_office out_office
-    ##   <chr>      <chr>                   <chr>  <chr>         <dbl>      <dbl>
-    ## 1 Donald Tr… Chairman of The Trump … Repub… Mike Pen…      2007       2021
-    ## 2 Barack Ob… U.S. Senator from Illi… Democ… Joe Biden      2009       2017
-    ## 3 George W.… Governor of Texas       Repub… Dick Che…      2001       2009
-    ## 4 Bill Clin… Governor of Arkansas    Democ… Al Gore        1993       2001
-    ## 5 George H.… Vice President of the … Repub… Dan Quay…      1989       1993
-    ## 6 Ronald Re… Governor of California  Repub… George H…      1981       1989
-    ## 7 Jimmy Car… Governor of Georgia     Democ… Walter M…      1977       1981
-    ## 8 Gerald Fo… Vice President of the … Repub… Nelson R…      1974       1977
-    ## 9 Richard N… Vice President of the … Repub… Gerald F…      1969       1974
+| name              | previous\_office                    | party      | vice               |  in\_office|  out\_office|
+|:------------------|:------------------------------------|:-----------|:-------------------|-----------:|------------:|
+| Donald Trump      | Chairman of The Trump Organization  | Republican | Mike Pence         |        2007|         2021|
+| Barack Obama      | U.S. Senator from Illinois          | Democratic | Joe Biden          |        2009|         2017|
+| George W. Bush    | Governor of Texas                   | Republican | Dick Cheney        |        2001|         2009|
+| Bill Clinton      | Governor of Arkansas                | Democratic | Al Gore            |        1993|         2001|
+| George H. W. Bush | Vice President of the United States | Republican | Dan Quayle         |        1989|         1993|
+| Ronald Reagan     | Governor of California              | Republican | George H. W. Bush  |        1981|         1989|
+| Jimmy Carter      | Governor of Georgia                 | Democratic | Walter Mondale     |        1977|         1981|
+| Gerald Ford       | Vice President of the United States | Republican | Nelson Rockefeller |        1974|         1977|
+| Richard Nixon     | Vice President of the United States | Republican | Gerald Ford        |        1969|         1974|
+
+Here we get a similar result as those got from the inner\_join(presidents, parties) however, we only maintain variables in the presidents tibble.
+
+##### semi\_join on parties & presidents
+
+``` r
+semi_join(parties, presidents) %>% 
+  kable()
+```
+
+    ## Joining, by = "party"
+
+| party      | lead           |
+|:-----------|:---------------|
+| Republican | Ronna McDaniel |
+| Democratic | Tom Perez      |
+
+From the above output of the semi join, we can see that a semi join of presidents on parties by party provides results are are similart to our tibble parties. All observations in the parties table appear in the presidents table. We also see here that the party named "Other" for which there are no matching rows in the presidents tibble has been dropped by the semi join.
 
 ### Anti Join
 
@@ -478,62 +558,231 @@ anti\_join(x, y): Return all rows from x where there are not matching values in 
 #### anti\_join on presidents & parties
 
 ``` r
-anti_join(presidents, parties)
+anti_join(presidents, parties) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 1 x 6
-    ##   name        previous_office         party    vice   in_office out_office
-    ##   <chr>       <chr>                   <chr>    <chr>      <dbl>      <dbl>
-    ## 1 Rebecca As… Senior Bioinformaticia… Indepen… Unkno…      1900       1969
+| name            | previous\_office              | party       | vice    |  in\_office|  out\_office|
+|:----------------|:------------------------------|:------------|:--------|-----------:|------------:|
+| Rebecca Asiimwe | Senior Bioinformatician BCCRC | Independent | Unknown |        1900|         1969|
 
-### Joining tibbles with respect to some common column name
+From the above output table, we can see that the operation of the anti join filters and returns rows in the presidents table that do not match values in the parties tibble. Here president Rebecca Asiimwe whoes party does not appear in the parties table has been returned as the output from the anti join.
+
+#### anti\_join on parties & presidents
 
 ``` r
-left_join(presidents, parties)
+anti_join(parties, presidents) %>% 
+  kable()
 ```
 
     ## Joining, by = "party"
 
-    ## # A tibble: 10 x 7
-    ##    name     previous_office     party  vice    in_office out_office lead  
-    ##    <chr>    <chr>               <chr>  <chr>       <dbl>      <dbl> <chr> 
-    ##  1 Donald … Chairman of The Tr… Repub… Mike P…      2007       2021 Ronna…
-    ##  2 Barack … U.S. Senator from … Democ… Joe Bi…      2009       2017 Tom P…
-    ##  3 George … Governor of Texas   Repub… Dick C…      2001       2009 Ronna…
-    ##  4 Bill Cl… Governor of Arkans… Democ… Al Gore      1993       2001 Tom P…
-    ##  5 George … Vice President of … Repub… Dan Qu…      1989       1993 Ronna…
-    ##  6 Ronald … Governor of Califo… Repub… George…      1981       1989 Ronna…
-    ##  7 Jimmy C… Governor of Georgia Democ… Walter…      1977       1981 Tom P…
-    ##  8 Gerald … Vice President of … Repub… Nelson…      1974       1977 Ronna…
-    ##  9 Richard… Vice President of … Repub… Gerald…      1969       1974 Ronna…
-    ## 10 Rebecca… Senior Bioinformat… Indep… Unknown      1900       1969 <NA>
+| party | lead     |
+|:------|:---------|
+| Other | Nameless |
 
-It makes sense to want to join the data frames with respect to some common column name. In this case it is clear that the id column is in both data frames. So let’s join the data frames using “id” as a “key”. The question is what to do about the fact that there is no id in df2 corresponding to id number 2. This is why different types of joins exist. Let’s see how they work. We’ll start with the left join: So the left join looks at the first data frame df1 and then attempts to find corresponding “id” values in df2 that match all id values in df1. Of course there are no ids matching 2 or 3 in df2 so what happens ? The left join will insert NAs in the m1.y column since there are no values in df2. Note that there is in fact an id of value 3 in both data frames so it fills in both measurement columns with the values. Also note that since in both data frames there is a column named “m1” so it has to create unique names to accommodate both columns. The “x” and “y” come from the fact that df1 comes before df2 in the calling sequence to left\_join. Thus “x” matches df1 and “y” matches df2.
+The anti\_join(parties, presidents) now works in the opposite direction to the anti\_join(presidents, parties) by returning rows in the parties table that do not match values in the presidents tibble. Here the party called "Other" that does not appear in the presidents table has been returned as the result of the anti\_join(parties, presidents)
 
 Set Operations:
 ---------------
 
+In this section, I explore set operations and how we can apply them in out data manipulation tasks. To allow for the exploration of set operations, I will create two more datasets of professors at UBC and in the Bioinformatics and Statistics Departments.
+
+``` r
+Bioinformatics_profs <- tibble(
+  name=c("Sara Mostafavi", "Sohrab Shah", "Charmaine Dean", "Steve Jones", "Jinko Graham", "Brad McNeney","Fiona Brinkman")
+)
+Bioinformatics_profs %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Sara Mostafavi |
+| Sohrab Shah    |
+| Charmaine Dean |
+| Steve Jones    |
+| Jinko Graham   |
+| Brad McNeney   |
+| Fiona Brinkman |
+
+``` r
+STAT_profs <- tibble(
+  name=c("Vincenzo Coia","Jennifer Bryan", "Sara Mostafavi", "Charmaine Dean","Jinko Graham","Brad McNeney", "Suborna Ahmed")
+)
+STAT_profs %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Vincenzo Coia  |
+| Jennifer Bryan |
+| Sara Mostafavi |
+| Charmaine Dean |
+| Jinko Graham   |
+| Brad McNeney   |
+| Suborna Ahmed  |
+
 **Functions used for set operations on two tibbles:**
 
-1.  `intersect`
-2.  `union`
-3.  `setdiff`
+1.  `intersect()`
+2.  `union()`
+3.  `setdiff()`
+
+### Intersect
+
+**Funcition:** The intersect function returns rows that appear in both x and y
+
+``` r
+intersect(Bioinformatics_profs, STAT_profs) %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Sara Mostafavi |
+| Charmaine Dean |
+| Jinko Graham   |
+| Brad McNeney   |
+
+The purpose of the intersect function is to return rows that appear in both tibbles. In the above output table we see professors that are both in the Statistics and Bioinformatics programs. If there were no observations that appear in both tables, R would throw back the error message: "`Error in intersect_data_frame(x, y) : not compatible: - Cols in y but not x:`lead`. - Cols in x but not y:`out\_office`,`vice`,`in\_office`,`previous\_office`,`name`.`"
+
+### setdiff(Bioinformatics\_profs, STAT\_profs)
+
+**Funcition:** The intersect function returns rows that appear in x but not y.
+
+``` r
+setdiff(Bioinformatics_profs, STAT_profs) %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Sohrab Shah    |
+| Steve Jones    |
+| Fiona Brinkman |
+
+##### setdiff(STAT\_profs, Bioinformatics\_profs)
+
+``` r
+setdiff(STAT_profs, Bioinformatics_profs) %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Vincenzo Coia  |
+| Jennifer Bryan |
+| Suborna Ahmed  |
+
+### Union
+
+**Funcition:** The union function returns rows that appear in either or both x and y
+
+``` r
+union(STAT_profs, Bioinformatics_profs) %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Fiona Brinkman |
+| Steve Jones    |
+| Sohrab Shah    |
+| Suborna Ahmed  |
+| Brad McNeney   |
+| Jinko Graham   |
+| Charmaine Dean |
+| Sara Mostafavi |
+| Jennifer Bryan |
+| Vincenzo Coia  |
 
 Biding datasets:
 ----------------
 
-1.  `bind_rows`
-2.  `bind cols`
+Many a times we have the need to concartenate tibbles/ dataframes. To achive this, we apply the bind\_rows and bind\_cols functions as will be explored below.
+
+1.  `bind_rows()`
+2.  `bind_cols()`
 
 ``` r
-#bind_rows
+bind_rows(STAT_profs, Bioinformatics_profs) %>% 
+  kable
 ```
 
+| name           |
+|:---------------|
+| Vincenzo Coia  |
+| Jennifer Bryan |
+| Sara Mostafavi |
+| Charmaine Dean |
+| Jinko Graham   |
+| Brad McNeney   |
+| Suborna Ahmed  |
+| Sara Mostafavi |
+| Sohrab Shah    |
+| Charmaine Dean |
+| Steve Jones    |
+| Jinko Graham   |
+| Brad McNeney   |
+| Fiona Brinkman |
+
 ``` r
-#bind_cols
+bind_cols(STAT_profs, Bioinformatics_profs) %>% 
+  kable
 ```
+
+| name           | name1          |
+|:---------------|:---------------|
+| Vincenzo Coia  | Sara Mostafavi |
+| Jennifer Bryan | Sohrab Shah    |
+| Sara Mostafavi | Charmaine Dean |
+| Charmaine Dean | Steve Jones    |
+| Jinko Graham   | Jinko Graham   |
+| Brad McNeney   | Brad McNeney   |
+| Suborna Ahmed  | Fiona Brinkman |
+
+Activity \#3
+------------
+
+> This is really an optional add-on to either of the previous activities. Explore the base R function merge(), which also does joins. Compare and contrast with dplyr joins. Explore the base R function match(), which is related to joins and merges, but is really more of a “table lookup”. Compare and contrast with a true join/merge.
+
+``` r
+merge(STAT_profs, Bioinformatics_profs) %>% 
+  kable
+```
+
+| name           |
+|:---------------|
+| Brad McNeney   |
+| Charmaine Dean |
+| Jinko Graham   |
+| Sara Mostafavi |
+
+``` r
+#merge(presidents, parties) %>% 
+#  kable
+```
+
+By default the data frames are merged on the columns with names they both have, but separate specifications of the columns can be given by by.x and by.y. The rows in the two data frames that match on the specified columns are extracted, and joined together. If there is more than one match, all possible matches contribute one row each. For the precise meaning of ‘match’, see match.
+
+``` r
+match(STAT_profs, Bioinformatics_profs) %>% 
+  kable
+```
+
+|    x|
+|----:|
+|   NA|
+
+``` r
+#match(presidents, parties)
+```
+
+The match function returns a vector of the positions of (first) matches of its first argument in its second.
 
 ------------------------------------------------------------------------
 
