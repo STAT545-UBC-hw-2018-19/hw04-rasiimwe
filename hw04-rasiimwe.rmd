@@ -354,7 +354,7 @@ setdiff(Bioinformatics_profs, STAT_profs) %>%
   kable
 ```
 
-##### setdiff(STAT_profs, Bioinformatics_profs)
+##### setdiff
 
 ```{r}
 setdiff(STAT_profs, Bioinformatics_profs) %>% 

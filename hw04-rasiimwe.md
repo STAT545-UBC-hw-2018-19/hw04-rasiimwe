@@ -665,7 +665,7 @@ setdiff(Bioinformatics_profs, STAT_profs) %>%
 | Steve Jones    |
 | Fiona Brinkman |
 
-##### setdiff(STAT\_profs, Bioinformatics\_profs)
+##### setdiff
 
 ``` r
 setdiff(STAT_profs, Bioinformatics_profs) %>% 
