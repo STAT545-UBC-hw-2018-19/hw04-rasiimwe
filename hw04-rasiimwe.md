@@ -181,7 +181,7 @@ life_expectancy %>%
   labs(x="life_expectancy of Kuwait", y="life_expectancy of Malawi") #specifying x and y axis labels respectively
 ```
 
-![](hw04-rasiimwe_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](hw04-rasiimwe_files/figure-markdown_github/lifeexp_KuwaitVsMalawi-1.png)
 
 Above, we see a scatter plot that has been built from the new transformed tibble (life\_expectancy). At times the shapes that our data takes on may or may not support the kinds of analyses we need. In this case, we wouldn't have been able to create this plot or it would have been more challenging had the data stayed in the long format in which it was prior. This further goes to show for the need of data reshaping before further analysis is done. It also helps to know which data formats support which type of analysis. I have shown the usage of the spread function.
 
