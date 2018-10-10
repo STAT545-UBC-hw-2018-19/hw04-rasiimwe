@@ -26,27 +26,31 @@ Rebecca Asiimwe
         -   [Anti Join](#anti-join)
     -   [Set Operations:](#set-operations)
         -   [Intersect](#intersect)
-        -   [setdiff(Bioinformatics\_profs, STAT\_profs)](#setdiffbioinformatics_profs-stat_profs)
         -   [Union](#union)
-    -   [Biding datasets:](#biding-datasets)
-    -   [Activity \#3](#activity-3)
-        -   [Sources to acknowledge:](#sources-to-acknowledge)
+        -   [setdiff](#setdiff)
+    -   [Binding datasets:](#binding-datasets)
+        -   [bind\_rows()](#bind_rows)
+        -   [bind\_cols()](#bind_cols)
+    -   [Supplementary Activity \#3](#supplementary-activity-3)
+        -   [merge() function](#merge-function)
+        -   [match() function](#match-function)
+    -   [Sources to acknowledge:](#sources-to-acknowledge)
 
 STAT545 Homework 4: Data wrangling with data aggregation and data reshaping
 ===========================================================================
 
-Data analysis tasks involve 3 main components, `(1) Data Manipulation`, `(2) Data Cleaning` and `(3) Data Visualization`. In my previous assignments, I showed the [application of dply for data exploration and manipulation, followed by visualisation of the data using ggplot2.](https://github.com/STAT545-UBC-students/hw03-rasiimwe/blob/master/hw03-rasiimwe.md). It is estimated that 80% of data analysis tasks are inclined to data manipulation and cleaning. This is attribtued to the growth in data sources that need preparation to efficiently handle this data
+Data analysis tasks comprise of 3 main components, **(1) Data Manipulation**, **(2) Data Cleaning** and **(3) Data Visualization**. It is estimated that 80% of data analysis tasks are inclined to data manipulation and cleaning attributed to the growth in data sources that need preparation for effective data analysis.
 
 The dplyr library as a major component of the data analysis ecosystem.
 ----------------------------------------------------------------------
 
 [<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
 
-Herein, I present **the application of the dplyr package in supporting data manipulation operations** for data anlysis. Here we shall focus on manipulating data using functions such as `gather()`, `spread()`, `mutating joins`, `filtering joins`, `set operations` and `biding` datasets.
+As shown in the figure above, data manipulation, cleaning and visualisation are key components to the data analysis process. Herein, I present key R functions and their application in data manipulation operations towards supporting data analysis. I will focus on manipulating data using functions such as `gather()`, `spread()`, `mutating joins`, `filtering joins`, `set operations` and `biding` datasets.
 
 ### Loading required packages
 
-First, I will load all packages required for this assignment
+First and foremost, I load all packages required for this assignment
 
 ``` r
 suppressPackageStartupMessages(library(tidyverse)) 
@@ -146,7 +150,7 @@ life_expectancy <- life_expectancy %>%
 Below I show a more tidy and usable tibble using the kable() function
 
 ``` r
-kable(life_expectancy)
+kable(life_expectancy) #applying the kable function from knitr to render my tibble in a neat table form
 ```
 
 |  year|  Bulgaria|  Cambodia|  Kuwait|  Malawi|
@@ -164,27 +168,22 @@ kable(life_expectancy)
 |  2002|    72.140|    56.752|  76.904|  45.009|
 |  2007|    73.005|    59.723|  77.588|  48.303|
 
-As we can see above, our initial table that was in long format is now in wide and more tidy form to support the building of the required scatter plot for the subsequent section.
+As we can see above, our initial table that was in long format is now in a wide and more tidy form to support the creation of the scatter plot required in the subsequent section.
 
 ### Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
 
 ``` r
- CambodiaVsBulgaria<- life_expectancy %>%
-  ggplot(aes(Cambodia, Bulgaria)) +
-  geom_point() + ggtitle("Life Expectancy") + theme_gray()+
-  labs(title="Life Expectancy CambodiaVsBulgaria",x="life_expectancy of Cambodia", y="life_expectancy of Bulgaria")
-
- KuwaitVsMalawi<- life_expectancy %>%
-  ggplot(aes(Kuwait, Malawi)) +
-  geom_point() + ggtitle("Life Expectancy") + theme_gray()+
-labs(title="Life Expectancy KuwaitVsMalawi ",x="life_expectancy of Kuwait", y="life_expectancy of Malawi")
-
-plot_grid(CambodiaVsBulgaria,  KuwaitVsMalawi, nrow=1, ncol = 2)
+life_expectancy %>%
+  ggplot(aes(Kuwait, Malawi)) + #specifying axis variables x=Kuwait and y=Malawi
+  geom_point() + #specifying the type of plot prefered, in this case scatter plot
+  ggtitle("Life Expectancy - Kuwait Vs Malawi") + #adding a title to my plot
+  theme_gray()+ #setting plot theme
+  labs(x="life_expectancy of Kuwait", y="life_expectancy of Malawi") #specifying x and y axis labels respectively
 ```
 
 ![](hw04-rasiimwe_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-Above, we see scatter plots that have been build from the new transformed tibble (life\_expectancy). The shapes that our data takes on may or may not support the kinds of analyses we need. In this case, we wouldnt have been able to create these plots had the data stayed in the long format which further goes to show for the need of data reshaping before futher analysis is done. It also helps to know which data formats support which type of analysis.
+Above, we see a scatter plot that has been built from the new transformed tibble (life\_expectancy). At times the shapes that our data takes on may or may not support the kinds of analyses we need. In this case, we wouldn't have been able to create this plot or it would have been more challenging had the data stayed in the long format in which it was prior. This further goes to show for the need of data reshaping before further analysis is done. It also helps to know which data formats support which type of analysis. I have shown the usage of the spread function.
 
 Qn 2. Join Prompt
 -----------------
@@ -199,7 +198,7 @@ Overview: Problem - You have two data sources and you need info from both in one
 
 [<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/join-venn.png" width="800" height="250"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/join-venn.png)
 
-Before we dig deeper into the various join functions, I will create the tibbles required to explore that application of these functions
+Before we dig deeper into the various join functions, I will create the tibbles required to explore the application of these functions
 
 ### Creating tibble 1
 
@@ -213,7 +212,7 @@ presidents <- tibble(
   vice = c("Mike Pence", "Joe Biden", "Dick Cheney", "Al Gore","Dan Quayle", "George H. W. Bush", "Walter Mondale","Nelson Rockefeller", "Gerald Ford","Unknown"),
   in_office=c(2007, 2009, 2001, 1993,1989, 1981, 1977,1974, 1969,1900),
   out_office=c(2021, 2017, 2009, 2001,1993, 1989, 1981,1977, 1974,1969)
-)
+) # the variables captured in this tibble are name, previous_office, party, vice, in_office and out_office
 
 kable(presidents)
 ```
@@ -231,15 +230,15 @@ kable(presidents)
 | Richard Nixon     | Vice President of the United States | Republican  | Gerald Ford        |        1969|         1974|
 | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Independent | Unknown            |        1900|         1969|
 
-The first tibble I have created above is that of presidents of the United states from 1969 to date. For the fun of it, I also inclued an artifuctual president to help point out salient dimensions when working with table joins.
+The first tibble I have created above is that of presidents of the United states from 1969 to date. For the fun of it, I also include a fake president to help point out salient dimensions when working with table joins.
 
 ### Creating tibble 2
 
 ``` r
 parties <- tibble(
   party=c("Republican", "Democratic", "Other"),
-  lead=c("Ronna McDaniel", "Tom Perez", "Nameless")
-)
+  lead=c("Ronna McDaniel", "Tom Perez", "Party Bandit")
+) # the variable captured in this tibble are party and lead, that is for the political party and the party lead respectively.
 
 kable(parties) 
 ```
@@ -248,21 +247,23 @@ kable(parties)
 |:-----------|:---------------|
 | Republican | Ronna McDaniel |
 | Democratic | Tom Perez      |
-| Other      | Nameless       |
+| Other      | Party Bandit   |
 
-The second tibble above shows the unique political parites in the United States and the respective party leads.
+The second tibble above shows the unique political parties in the United States and the respective party leads.
 
 Mutating joins:
 ---------------
 
-**Joining tibbles using mutating functions:**
+Mutating joins combine variables from two tibbles. They do this by adding variables from one table to matching observations in another table.
+
+**Below are the mutating functions we shall explore:**
 
 1.  `left_join`
 2.  `right_join`
 3.  `inner_join`
 4.  `full_join`
 
-\*\* By default all joins will be by party `left_join(presidents, parties, by="party")`\*\*
+By default, all joins will be by party. The general syntax for writing this by specifying the variable to join on is join\_function(x, t, by="variable"), however, since all my joins will be by party, my lines of code will conform to lines similar to `left_join(presidents, parties)`, this is also so because the variable party is the primary key in the parties tibble while it is a foreign key in the presidents table - this is also what helps R select it as the variable to join the tibbles on.
 
 ### Left Join
 
@@ -270,9 +271,7 @@ Mutating joins:
 
 **Basic syntax:** `left_join(x, y)`
 
-**Join Function:**
-
-left\_join(x, y): keep all x, drop unmatched y:- Return all rows from ‘x’, and all columns from ‘x’ and ‘y’. Rows in ‘x’ with no match in ‘y’ will have ‘NA’ values in the new columns. If there are multiple matches between ‘x’ and ‘y’, all combinations of the matches are returned.
+**Function:** keep all x, drop unmatched y:- Return all rows from ‘x’, and all columns from ‘x’ and ‘y’. Rows in ‘x’ with no match in ‘y’ will have ‘NA’ values in the new columns. If there are multiple matches between ‘x’ and ‘y’, all combinations of the matches are returned.
 
 #### left\_join on presidents & parties
 
@@ -296,9 +295,9 @@ left_join(presidents, parties) %>%
 | Richard Nixon     | Vice President of the United States | Republican  | Gerald Ford        |        1969|         1974| Ronna McDaniel |
 | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Independent | Unknown            |        1900|         1969| NA             |
 
-In the table above table, we see the effect of a left\_join on the `presidents` and `parties` tibbles - (presidents, parties). We see that in the output we have maintained the `presidents` tibble concartenated with an additional variable `lead` from the `parties` tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique and since president Rebecca Asiimwe's party does not appear in the `parties` tibble, the lead is replaced with NA in the output table above. Let's try a left\_join on parties and presidents.
+In the table above table, we see the effect of a `left_join(presidents, parties)`. We see that in the output we have maintained the presidents tibble concatenated d with an additional variable `lead` from the parties tibble. In this case, the party lead from the parties tibble is being matched with each row in the presidents table based on the party variable. The parties are unique and since president Rebecca Asiimwe's party does not appear in the parties tibble, the lead is replaced with NA in the output table above. Let's try a left\_join on parties and presidents.
 
-##### left\_join on parties & presidents
+#### left\_join on parties & presidents
 
 ``` r
 left_join(parties, presidents) %>% 
@@ -318,9 +317,9 @@ left_join(parties, presidents) %>%
 | Democratic | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
 | Democratic | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
 | Democratic | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
-| Other      | Nameless       | NA                | NA                                  | NA                 |          NA|           NA|
+| Other      | Party Bandit   | NA                | NA                                  | NA                 |          NA|           NA|
 
-What happened here!! .... the output table looks different and yet more interesting. When we look closely we see that Rebecca Asiimwe has been droped in this join operation in which we are doing a left join of presidents on parties and joining by the party variable from the parties table. The drop of this president is mainly because, her party does not appear in the parties table. In a nutshell what is going on here is that the left join on (parties, presidents) has maintained all variables from the parties tibble plus matching rows from the presidents table.
+What happened here!! .... the output table looks different and yet more interesting. When we look closely we see that Rebecca Asiimwe has been dropped in this join operation in which we are doing a left join of presidents on parties and joining by the party variable from the parties table. The drop of this president is mainly because, her party does not appear in the parties table. In a nutshell what is going on here is that the left join on (parties, presidents) has maintained all variables from the parties tibble plus matching rows from the presidents table - this also explains why the party called "Other" that has no matching row in the presidents table is being maintained.
 
 ### Right Join
 
@@ -350,11 +349,11 @@ right_join(presidents, parties) %>%
 | Barack Obama      | U.S. Senator from Illinois          | Democratic | Joe Biden          |        2009|         2017| Tom Perez      |
 | Bill Clinton      | Governor of Arkansas                | Democratic | Al Gore            |        1993|         2001| Tom Perez      |
 | Jimmy Carter      | Governor of Georgia                 | Democratic | Walter Mondale     |        1977|         1981| Tom Perez      |
-| NA                | NA                                  | Other      | NA                 |          NA|           NA| Nameless       |
+| NA                | NA                                  | Other      | NA                 |          NA|           NA| Party Bandit   |
 
-The right join on (presidents, parties) maintains all tupples/rows from the presidents tibble for which there are matching rows in the parties table. As we can see, this includes all the rows from the parties and only those from the presidents tibble that match. President Rebecca Asiimwe was droped by the right join since their party does not match any of those in the parties tibble.
+The right join on (presidents, parties) maintains all tupples/rows from the presidents tibble for which there are matching rows in the parties table. As we can see, this includes all the rows from the parties and only those from the presidents tibble that match. President Rebecca Asiimwe was dropped by the right join since their party does not match any of those in the parties tibble.
 
-##### right join on parties & presidents
+#### right\_join on parties & presidents
 
 ``` r
 right_join(parties, presidents) %>% 
@@ -376,7 +375,7 @@ right_join(parties, presidents) %>%
 | Republican  | Ronna McDaniel | Richard Nixon     | Vice President of the United States | Gerald Ford        |        1969|         1974|
 | Independent | NA             | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Unknown            |        1900|         1969|
 
-Here we see that the right\_join on (parties, presidents) maintains all rows from the parties tibble and concartenates them with all rows from the presidents tibble. Unlike the left joins on (parties, presidents) that droped non matching rows as seen above, here non matching rows are included as well with NAs used for cases of missing values.
+Here we see that the right\_join on (parties, presidents) maintains all rows from the parties tibble and concatenated s them with all rows from the presidents tibble. Unlike the left joins on (parties, presidents) that dropped non-matching rows as seen above, here non matching rows are included as well with NAs used for cases of missing values.
 
 ### Inner Join
 
@@ -384,9 +383,7 @@ Here we see that the right\_join on (parties, presidents) maintains all rows fro
 
 **Basic syntax:** `inner_join(x, y)`
 
-**Join Function:**
-
-inner\_join(x, y): : keep only matching:- Return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned.
+**Function:** keep only matching:- Return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned.
 
 #### inner\_join on presidents & parties
 
@@ -409,9 +406,9 @@ inner_join(presidents, parties) %>%
 | Gerald Ford       | Vice President of the United States | Republican | Nelson Rockefeller |        1974|         1977| Ronna McDaniel |
 | Richard Nixon     | Vice President of the United States | Republican | Gerald Ford        |        1969|         1974| Ronna McDaniel |
 
-The output of the inner join as see above results in the inclusion of all the rows of the parties tibble to match rows in presidents tibble - matching is done by party. As we can see, president Rebecca Asiimwe was droped by the inner join because the party to which she belongs (Independent) does not match any of those in the parties tibble/ does not exist in the parties table.
+The output of the inner join as see above results in the inclusion of all the rows of the parties tibble to match rows in presidents tibble - matching is done by party. As we can see, president Rebecca Asiimwe was dropped by the inner join because the party to which she belongs (Independent) does not match any of those in the parties tibble/ does not exist in the parties table.
 
-##### inner\_join on parties & presidents
+#### inner\_join on parties & presidents
 
 ``` r
 inner_join(parties, presidents) %>% 
@@ -432,17 +429,15 @@ inner_join(parties, presidents) %>%
 | Democratic | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
 | Democratic | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
 
-An inner join on parties and presidents on variable party results in every party in the parties table being matched with every president in the presidents tibble. We can also see that every party appears multiple times in the above output table and appearing once for each matching row. We can still see that president Rebecca Asiimwe was dropped from the result of the join because her party does not appear in the parties table and therefore wouldn't match any row in the presidents table.
+An inner join of parties and presidents on variable party results in every party in the parties table being matched with every president in the presidents tibble. We can also see that every party appears multiple times in the above output table and appearing once for each matching row. We can still see that president Rebecca Asiimwe was dropped from the result of the join because her party does not appear in the parties table and therefore wouldn't match any row in the presidents table.
 
 ### Full Join
 
 [<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/full-join.gif" width="300" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/full-join.gif)
 
-**Basic syntax:** `full_join(x, y): keep everything`
+**Basic syntax:** `full_join(x, y)`
 
-**Join Function:**
-
-full\_join(x, y): Return all rows and all columns from both x and y. Where there are not matching values, returns NA for the one missing. This is a mutating join.
+**Function:**Return all rows and all columns from both x and y. Where there are not matching values, returns NA for the one missing.
 
 #### full\_join on presidents & parties
 
@@ -465,9 +460,11 @@ full_join(presidents, parties) %>%
 | Gerald Ford       | Vice President of the United States | Republican  | Nelson Rockefeller |        1974|         1977| Ronna McDaniel |
 | Richard Nixon     | Vice President of the United States | Republican  | Gerald Ford        |        1969|         1974| Ronna McDaniel |
 | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Independent | Unknown            |        1900|         1969| NA             |
-| NA                | NA                                  | Other       | NA                 |          NA|           NA| Nameless       |
+| NA                | NA                                  | Other       | NA                 |          NA|           NA| Party Bandit   |
 
-The full join functions just like taking the union of two sets. From the output table of this join we get all variables of presidents plus all variables from the lead table, however, we should note that the unique variable on which the join is being made (where the two table intersect=party) is not duplicated. With a full join, all rows without matching values from either table carry NAs in the variables found only in the other table.
+The full join function works in a similar fashion as that of taking the union of two sets. From the output table of this join, we get all variables of presidents plus all variables from the lead table, however, we should note that the unique variable on which the join is being made (where the two table intersect=party) is not duplicated, that is we do not have two variables called party(one from presidents and another from parties) in the above output. With a full join, all rows without matching values from either table carry NAs in the variables found only in the other table.
+
+#### full\_join on parties % presidents
 
 ``` r
 full_join(parties, presidents) %>% 
@@ -487,15 +484,17 @@ full_join(parties, presidents) %>%
 | Democratic  | Tom Perez      | Barack Obama      | U.S. Senator from Illinois          | Joe Biden          |        2009|         2017|
 | Democratic  | Tom Perez      | Bill Clinton      | Governor of Arkansas                | Al Gore            |        1993|         2001|
 | Democratic  | Tom Perez      | Jimmy Carter      | Governor of Georgia                 | Walter Mondale     |        1977|         1981|
-| Other       | Nameless       | NA                | NA                                  | NA                 |          NA|           NA|
+| Other       | Party Bandit   | NA                | NA                                  | NA                 |          NA|           NA|
 | Independent | NA             | Rebecca Asiimwe   | Senior Bioinformatician BCCRC       | Unknown            |        1900|         1969|
 
-In the above table we have a similar output to that of a full join on presidents and parties except for the fact that joining is done on the parties table, (inner vs outer / left vs right table in join). And we can also see that variables from the presidents table get appended to the party table, however, we see the contrary in the full join on presidents and parties since we are joining the parties tibble to the presidents tibble by party.
+In the above table we have a similar output to that of a full join on presidents and parties except for the fact that joining is done on the parties table, (inner vs outer / left vs right table in join). And we can also see that variables from the presidents table get appended to the party table, however, we see the contrary in the full join on presidents and parties since we are joining the parties tibble to the presidents tibble.
 
 Filtering joins:
 ----------------
 
-**Joining tibbles using filtering functions:**
+Filtering joins retain observations in one table based on whether or not they match the observations in another table
+
+**Below are the filtering functions we shall explore:**
 
 1.  `semi_join`
 2.  `anti_join`
@@ -506,9 +505,7 @@ Filtering joins:
 
 **Basic syntax:** `semi_join(x, y)`
 
-**Join Function:**
-
-semi\_join(x, y):return rows from x where there are matching values in y:- Return all rows from x where there are matching values in y, keeping just columns from x. A semi join differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x. This is a filtering join.
+**Function:** return rows from x where there are matching values in y:- Return all rows from x where there are matching values in y, keeping just columns from x. A semi join differs from an inner join because an inner join will return one row of x for each matching row of y, where a semi join will never duplicate rows of x.
 
 #### semi\_join on presidents & parties
 
@@ -531,9 +528,9 @@ semi_join(presidents, parties) %>%
 | Gerald Ford       | Vice President of the United States | Republican | Nelson Rockefeller |        1974|         1977|
 | Richard Nixon     | Vice President of the United States | Republican | Gerald Ford        |        1969|         1974|
 
-Here we get a similar result as those got from the inner\_join(presidents, parties) however, we only maintain variables in the presidents tibble.
+Here we get a similar result as that got from the inner\_join(presidents, parties) however, we only maintain variables in the presidents tibble.
 
-##### semi\_join on parties & presidents
+#### semi\_join on parties & presidents
 
 ``` r
 semi_join(parties, presidents) %>% 
@@ -547,13 +544,15 @@ semi_join(parties, presidents) %>%
 | Republican | Ronna McDaniel |
 | Democratic | Tom Perez      |
 
-From the above output of the semi join, we can see that a semi join of presidents on parties by party provides results are are similart to our tibble parties. All observations in the parties table appear in the presidents table. We also see here that the party named "Other" for which there are no matching rows in the presidents tibble has been dropped by the semi join.
+From the above output of the semi join, we can see that a semi join of presidents on parties provides results that are similar to our parties tibble. In the example tibbles I created, all observations in the parties table appear in the presidents table. We also see here that the party named "Other" for which there are no matching rows in the presidents tibble has been dropped by the semi join.
 
 ### Anti Join
 
 [<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif" width="300" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/anti-join.gif)
 
-anti\_join(x, y): Return all rows from x where there are not matching values in y, keeping just columns from x. This is a filtering join.
+**Basic syntax:** `anti_join(x, y)`
+
+**Function:** Return all rows from x where there are no matching values in y, keeping just columns from x.
 
 #### anti\_join on presidents & parties
 
@@ -568,7 +567,7 @@ anti_join(presidents, parties) %>%
 |:----------------|:------------------------------|:------------|:--------|-----------:|------------:|
 | Rebecca Asiimwe | Senior Bioinformatician BCCRC | Independent | Unknown |        1900|         1969|
 
-From the above output table, we can see that the operation of the anti join filters and returns rows in the presidents table that do not match values in the parties tibble. Here president Rebecca Asiimwe whoes party does not appear in the parties table has been returned as the output from the anti join.
+From the above output table, we can see that the operation of the anti join filters and returns rows in the presidents table that do not match values in the parties tibble. Here president Rebecca Asiimwe whose party does not appear in the parties table has been returned as the output from the anti join.
 
 #### anti\_join on parties & presidents
 
@@ -579,54 +578,59 @@ anti_join(parties, presidents) %>%
 
     ## Joining, by = "party"
 
-| party | lead     |
-|:------|:---------|
-| Other | Nameless |
+| party | lead         |
+|:------|:-------------|
+| Other | Party Bandit |
 
 The anti\_join(parties, presidents) now works in the opposite direction to the anti\_join(presidents, parties) by returning rows in the parties table that do not match values in the presidents tibble. Here the party called "Other" that does not appear in the presidents table has been returned as the result of the anti\_join(parties, presidents)
 
 Set Operations:
 ---------------
 
-In this section, I explore set operations and how we can apply them in out data manipulation tasks. To allow for the exploration of set operations, I will create two more datasets of professors at UBC and in the Bioinformatics and Statistics Departments.
+In this section, I explore set operations and how we can apply them in our data manipulation tasks. To allow for the exploration of set operations, I will create two more datasets of professors at UBC, in the Bioinformatics and Statistics Departments.
 
 ``` r
+#creating Bioinformatics_profs tibble
 Bioinformatics_profs <- tibble(
-  name=c("Sara Mostafavi", "Sohrab Shah", "Charmaine Dean", "Steve Jones", "Jinko Graham", "Brad McNeney","Fiona Brinkman")
+  name=c("Sara Mostafavi", "Sohrab Shah", "Charmaine Dean", "Steve Jones", "Jinko Graham", "Brad McNeney","Fiona Brinkman"),
+  course=c("STAT543","BIOF55","STAT542","BIOF56","STAT541","STAT540","BIOF57")
 )
 Bioinformatics_profs %>% 
   kable
 ```
 
-| name           |
-|:---------------|
-| Sara Mostafavi |
-| Sohrab Shah    |
-| Charmaine Dean |
-| Steve Jones    |
-| Jinko Graham   |
-| Brad McNeney   |
-| Fiona Brinkman |
+| name           | course  |
+|:---------------|:--------|
+| Sara Mostafavi | STAT543 |
+| Sohrab Shah    | BIOF55  |
+| Charmaine Dean | STAT542 |
+| Steve Jones    | BIOF56  |
+| Jinko Graham   | STAT541 |
+| Brad McNeney   | STAT540 |
+| Fiona Brinkman | BIOF57  |
 
 ``` r
+#creating STAT_profs tibble
+
 STAT_profs <- tibble(
-  name=c("Vincenzo Coia","Jennifer Bryan", "Sara Mostafavi", "Charmaine Dean","Jinko Graham","Brad McNeney", "Suborna Ahmed")
+  name=c("Vincenzo Coia","Jennifer Bryan", "Sara Mostafavi", "Charmaine Dean","Jinko Graham","Brad McNeney", "Suborna Ahmed"),
+  course=c("STAT545","STAT544","STAT543","STAT542","STAT541","STAT540","STAT514")
 )
 STAT_profs %>% 
   kable
 ```
 
-| name           |
-|:---------------|
-| Vincenzo Coia  |
-| Jennifer Bryan |
-| Sara Mostafavi |
-| Charmaine Dean |
-| Jinko Graham   |
-| Brad McNeney   |
-| Suborna Ahmed  |
+| name           | course  |
+|:---------------|:--------|
+| Vincenzo Coia  | STAT545 |
+| Jennifer Bryan | STAT544 |
+| Sara Mostafavi | STAT543 |
+| Charmaine Dean | STAT542 |
+| Jinko Graham   | STAT541 |
+| Brad McNeney   | STAT540 |
+| Suborna Ahmed  | STAT514 |
 
-**Functions used for set operations on two tibbles:**
+**Below are the set operations we shall explore:**
 
 1.  `intersect()`
 2.  `union()`
@@ -634,162 +638,215 @@ STAT_profs %>%
 
 ### Intersect
 
-**Funcition:** The intersect function returns rows that appear in both x and y
+**Basic syntax:** `intersect(x,y)`
+
+**Function:** The intersect function returns rows that appear in both x and y
 
 ``` r
 intersect(Bioinformatics_profs, STAT_profs) %>% 
   kable
 ```
 
-| name           |
-|:---------------|
-| Sara Mostafavi |
-| Charmaine Dean |
-| Jinko Graham   |
-| Brad McNeney   |
+| name           | course  |
+|:---------------|:--------|
+| Sara Mostafavi | STAT543 |
+| Charmaine Dean | STAT542 |
+| Jinko Graham   | STAT541 |
+| Brad McNeney   | STAT540 |
 
 The purpose of the intersect function is to return rows that appear in both tibbles. In the above output table we see professors that are both in the Statistics and Bioinformatics programs. If there were no observations that appear in both tables, R would throw back the error message: "`Error in intersect_data_frame(x, y) : not compatible: - Cols in y but not x:`lead`. - Cols in x but not y:`out\_office`,`vice`,`in\_office`,`previous\_office`,`name`.`"
 
-### setdiff(Bioinformatics\_profs, STAT\_profs)
-
-**Funcition:** The intersect function returns rows that appear in x but not y.
-
-``` r
-setdiff(Bioinformatics_profs, STAT_profs) %>% 
-  kable
-```
-
-| name           |
-|:---------------|
-| Sohrab Shah    |
-| Steve Jones    |
-| Fiona Brinkman |
-
-##### setdiff
-
-``` r
-setdiff(STAT_profs, Bioinformatics_profs) %>% 
-  kable
-```
-
-| name           |
-|:---------------|
-| Vincenzo Coia  |
-| Jennifer Bryan |
-| Suborna Ahmed  |
-
 ### Union
 
-**Funcition:** The union function returns rows that appear in either or both x and y
+**Basic syntax:** `union(x,y)`
+
+**Function:** The union function returns rows that appear in either or both x and y
 
 ``` r
 union(STAT_profs, Bioinformatics_profs) %>% 
   kable
 ```
 
-| name           |
-|:---------------|
-| Fiona Brinkman |
-| Steve Jones    |
-| Sohrab Shah    |
-| Suborna Ahmed  |
-| Brad McNeney   |
-| Jinko Graham   |
-| Charmaine Dean |
-| Sara Mostafavi |
-| Jennifer Bryan |
-| Vincenzo Coia  |
+| name           | course  |
+|:---------------|:--------|
+| Fiona Brinkman | BIOF57  |
+| Steve Jones    | BIOF56  |
+| Sohrab Shah    | BIOF55  |
+| Suborna Ahmed  | STAT514 |
+| Brad McNeney   | STAT540 |
+| Jinko Graham   | STAT541 |
+| Charmaine Dean | STAT542 |
+| Sara Mostafavi | STAT543 |
+| Jennifer Bryan | STAT544 |
+| Vincenzo Coia  | STAT545 |
 
-Biding datasets:
-----------------
+From the above output we can see that the union set of all rows in the STAT\_profs and Bioinformatics\_profs tibles are returned. Just like the union of sets, intersecting observations are not duplciated.
 
-Many a times we have the need to concartenate tibbles/ dataframes. To achive this, we apply the bind\_rows and bind\_cols functions as will be explored below.
+### setdiff
+
+**Basic syntax:** `setdiff(x,y)`
+
+**Function:** The setdiff function returns rows that appear in x but not y.
+
+#### setdiff(Bioinformatics\_profs, STAT\_profs)
+
+``` r
+setdiff(Bioinformatics_profs, STAT_profs) %>% 
+  kable
+```
+
+| name           | course |
+|:---------------|:-------|
+| Sohrab Shah    | BIOF55 |
+| Steve Jones    | BIOF56 |
+| Fiona Brinkman | BIOF57 |
+
+From the table above generated from the setdiff(Bioinformatics\_profs, STAT\_profs), we can see that all rows that appear in the Bioinformatics\_profs tibble but not in the STAT\_profs tibble are returned. Let's also try setdiff( STAT\_profs, Bioinformatics\_profs) and see what we get!
+
+#### \#\#\#\# setdiff( STAT\_profs, Bioinformatics\_profs)
+
+``` r
+setdiff(STAT_profs, Bioinformatics_profs) %>% 
+  kable
+```
+
+| name           | course  |
+|:---------------|:--------|
+| Vincenzo Coia  | STAT545 |
+| Jennifer Bryan | STAT544 |
+| Suborna Ahmed  | STAT514 |
+
+Nice! this is the output I expected. The setdiff(STAT\_profs, Bioinformatics\_profs) returns rows in the STAT\_profs tible that are not in the Bioinformatics\_profs tibble. More like (STAT\_profs - Bioinformatics\_profs)
+
+Binding datasets:
+-----------------
+
+Many a times we have the need to concatenated tibbles/ dataframes - to combine observations from multiple tables into one. To achive this, we apply the bind\_rows or bind\_cols functions as will be explored below.
+
+**Below are the dataset binding functions we shall explore:**
 
 1.  `bind_rows()`
 2.  `bind_cols()`
 
+### bind\_rows()
+
 ``` r
+#bind_rows is synonymous to base R's rbind()
 bind_rows(STAT_profs, Bioinformatics_profs) %>% 
   kable
 ```
 
-| name           |
-|:---------------|
-| Vincenzo Coia  |
-| Jennifer Bryan |
-| Sara Mostafavi |
-| Charmaine Dean |
-| Jinko Graham   |
-| Brad McNeney   |
-| Suborna Ahmed  |
-| Sara Mostafavi |
-| Sohrab Shah    |
-| Charmaine Dean |
-| Steve Jones    |
-| Jinko Graham   |
-| Brad McNeney   |
-| Fiona Brinkman |
+| name           | course  |
+|:---------------|:--------|
+| Vincenzo Coia  | STAT545 |
+| Jennifer Bryan | STAT544 |
+| Sara Mostafavi | STAT543 |
+| Charmaine Dean | STAT542 |
+| Jinko Graham   | STAT541 |
+| Brad McNeney   | STAT540 |
+| Suborna Ahmed  | STAT514 |
+| Sara Mostafavi | STAT543 |
+| Sohrab Shah    | BIOF55  |
+| Charmaine Dean | STAT542 |
+| Steve Jones    | BIOF56  |
+| Jinko Graham   | STAT541 |
+| Brad McNeney   | STAT540 |
+| Fiona Brinkman | BIOF57  |
+
+From the above output we see that all rows from Bioinformatics\_profs have been bound to the rows from STAT\_profs. Notice that the output contains duplicates. For example, we see Sarah Mostavi, appearing twice with the first observation from the STAT\_profs tibble and the second observation from the Bioinformatics\_profs tibble. Next, let's see what bind\_cols() returns.
+
+### bind\_cols()
 
 ``` r
+#bind_cols is synonymous to base R's cbind()
 bind_cols(STAT_profs, Bioinformatics_profs) %>% 
   kable
 ```
 
-| name           | name1          |
-|:---------------|:---------------|
-| Vincenzo Coia  | Sara Mostafavi |
-| Jennifer Bryan | Sohrab Shah    |
-| Sara Mostafavi | Charmaine Dean |
-| Charmaine Dean | Steve Jones    |
-| Jinko Graham   | Jinko Graham   |
-| Brad McNeney   | Brad McNeney   |
-| Suborna Ahmed  | Fiona Brinkman |
+| name           | course  | name1          | course1 |
+|:---------------|:--------|:---------------|:--------|
+| Vincenzo Coia  | STAT545 | Sara Mostafavi | STAT543 |
+| Jennifer Bryan | STAT544 | Sohrab Shah    | BIOF55  |
+| Sara Mostafavi | STAT543 | Charmaine Dean | STAT542 |
+| Charmaine Dean | STAT542 | Steve Jones    | BIOF56  |
+| Jinko Graham   | STAT541 | Jinko Graham   | STAT541 |
+| Brad McNeney   | STAT540 | Brad McNeney   | STAT540 |
+| Suborna Ahmed  | STAT514 | Fiona Brinkman | BIOF57  |
 
-Activity \#3
-------------
+We still see dublicates maintained however, unlike the output we saw in bind\_rows(), here we see binding by columns. This is a vertical bind where the initial STAT\_profs tibble that had two columns now has 4. To avoid duplication of names, notice that R has smartly added a distinguising nubmer(1) to distiguish name from name1 as the incoming variables from the Bioinformatics\_profs tibble have similar names to those of the STAT\_profs tibble.
+
+Supplementary Activity \#3
+--------------------------
 
 > This is really an optional add-on to either of the previous activities. Explore the base R function merge(), which also does joins. Compare and contrast with dplyr joins. Explore the base R function match(), which is related to joins and merges, but is really more of a “table lookup”. Compare and contrast with a true join/merge.
 
+### merge() function
+
+**Basic syntax:** `merge(x,y)`
+
+**Function:** The rows in two data frames that match on the specified columns are extracted, and joined together. If there is more than one match, all possible matches contribute one row each.
+
 ``` r
-merge(STAT_profs, Bioinformatics_profs) %>% 
+merge(Bioinformatics_profs, STAT_profs) %>% 
   kable
 ```
 
-| name           |
-|:---------------|
-| Brad McNeney   |
-| Charmaine Dean |
-| Jinko Graham   |
-| Sara Mostafavi |
+| name           | course  |
+|:---------------|:--------|
+| Brad McNeney   | STAT540 |
+| Charmaine Dean | STAT542 |
+| Jinko Graham   | STAT541 |
+| Sara Mostafavi | STAT543 |
+
+From the above output, we see that the merge funtion has merged the two tibbles on observations that appear in both tibbles. The merge function gives us a similar result to that seen when we run intersec(Bioinformatics\_profs, STAT\_profs). Let's also look into the match() function and see the results it returns.
+
+### match() function
+
+**Function:** The match function returns a vector of the positions of (first) matches of its first argument in its second.
 
 ``` r
-#merge(presidents, parties) %>% 
-#  kable
+name=c("Sara Mostafavi", "Sohrab Shah", "Charmaine Dean", "Steve Jones", "Jinko Graham", "Brad McNeney","Fiona Brinkman")
+name2=c("Vincenzo Coia","Jennifer Bryan", "Sara Mostafavi", "Charmaine Dean","Jinko Graham","Brad McNeney", "Suborna Ahmed")
+match(name, name2)
 ```
 
-By default the data frames are merged on the columns with names they both have, but separate specifications of the columns can be given by by.x and by.y. The rows in the two data frames that match on the specified columns are extracted, and joined together. If there is more than one match, all possible matches contribute one row each. For the precise meaning of ‘match’, see match.
+    ## [1]  3 NA  4 NA  5  6 NA
+
+When we run the match function on the two vectors name and name2, the function works by returning positions in name2 that have a matching value in name. For example, the first value to assess is "Sara Mostafavi", a look up is done on the second vector. We see that "Sara Mostafavi" isin position 3 of the name2 vector so position 3 is returned. The next value to look up is "Sohrab Shah", a lookup in name2 does not find any value matching "Sohrab Shah", so the function returns NA, while "Charmaine Dean" in name appears in position 4 of name2. We can also look for a specific value as shown below:
 
 ``` r
-match(STAT_profs, Bioinformatics_profs) %>% 
-  kable
+match("Sara Mostafavi", name2) #match Sara Mostafavi to values in name2 and if found return Sara Mostafavi's position in name2
 ```
 
-|    x|
-|----:|
-|   NA|
+    ## [1] 3
+
+The obove code snipped matches the value Sara Mostafavi to values in the name2 vector, if found, the position with the matching value is returned, in this case position 3 is returned.
 
 ``` r
-#match(presidents, parties)
+match("Sohrab Shah", name2)#match Sohrab Shah to values in name2 and if found return Sohrab Shah's position in name2
 ```
 
-The match function returns a vector of the positions of (first) matches of its first argument in its second.
+    ## [1] NA
+
+Similarily, the above code snipped looks for matching values of Sohrab Shah in the name2 vector. The returned NA implies that there is no occurance of Sohrab Shah in the name2 vector.
+
+``` r
+"Sara Mostafavi" %in% name2
+```
+
+    ## [1] TRUE
+
+We can also use the above code snipped to check whether a value exists in a vector. In this case, either TRUE or FALSE will be returned.
 
 ------------------------------------------------------------------------
 
-### Sources to acknowledge:
+Sources to acknowledge:
+-----------------------
 
-[STAT545 Class notes and excercises by Rashedul Islam](https://github.com/rasiimwe/STAT545_participation/blob/master/cm010/cm010-exercise.md)
+[STAT545 Class notes and exercises by Rashedul Islam](https://github.com/rasiimwe/STAT545_participation/blob/master/cm010/cm010-exercise.md)
 
 [Jenny Bryan's Cheatsheet for dplyr join functions](http://stat545.com/bit001_dplyr-cheatsheet.html)
 
-[Garrick Aden-Buie's tidy verbs](https://github.com/gadenbuie/tidyexplain#readme) [R-bloggers](https://www.r-bloggers.com/express-intro-to-dplyr/)
+[Garrick Aden-Buie's tidy verbs](https://github.com/gadenbuie/tidyexplain#readme) for gifs used
+
+[R-bloggers](https://www.r-bloggers.com/express-intro-to-dplyr/)
