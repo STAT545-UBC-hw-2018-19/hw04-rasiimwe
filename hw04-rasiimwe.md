@@ -44,7 +44,7 @@ Data analysis tasks comprise of 3 main components, **(1) Data Manipulation**, **
 The dplyr library as a major component of the data analysis ecosystem.
 ----------------------------------------------------------------------
 
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="500"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png" width="500" height="400"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/dplyr.png)
 
 As shown in the figure above, data manipulation, cleaning and visualisation are key components to the data analysis process. Herein, I present key R functions and their application in data manipulation operations towards supporting data analysis. I will focus on manipulating data using functions such as `gather()`, `spread()`, `mutating joins`, `filtering joins`, `set operations` and `biding` datasets.
 
@@ -267,7 +267,9 @@ By default, all joins will be by party. The general syntax for writing this by s
 
 ### Left Join
 
-[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif" width="300" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif) **Basic syntax:** `left_join(x, y)`
+[<img align ="center" src="https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif" width="300" height="300"/>](https://github.com/STAT545-UBC-students/hw04-rasiimwe/blob/master/plugins/left-join.gif)
+
+**Basic syntax:** `left_join(x, y)`
 
 **Function:** keep all x, drop unmatched y:- Return all rows from ‘x’, and all columns from ‘x’ and ‘y’. Rows in ‘x’ with no match in ‘y’ will have ‘NA’ values in the new columns. If there are multiple matches between ‘x’ and ‘y’, all combinations of the matches are returned.
 
